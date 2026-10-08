@@ -39,7 +39,7 @@ a {
 /* ===== Estrutura: sidebar + conteúdo ===== */
 .app {
   display: grid;
-  grid-template-columns: 200px, 1fr;
+  grid-template-columns: .15fr 1fr;
   height: 100vh;
 }
 
