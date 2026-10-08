@@ -1,0 +1,260 @@
+/* ===== VARIÁVEIS (PALETA CORES) =====*/
+:root {
+  --nav-1: #0f2747;
+  --nav-2: #0a1a33;
+  --blue-active: #2a62d4;
+  --green: #0f8a63;
+  --bg: #f3f6fb;
+  --card: #ffffff;
+  --border: #e4e9f2;
+  --text: #14243d;
+  --muted: #6b7a90;
+}
+
+/* ===== Reset e página estática ===== */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  font-family: "Segoe UI", system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 13px;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* ===== Estrutura: sidebar + conteúdo ===== */
+.app {
+  display: grid;
+  grid-template-columns: 200px, 1fr;
+  height: 100vh;
+}
+
+.content {
+  padding: 14px 24px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  min-width: 0;
+  height: 100vh;
+}
+
+/* ===== Sidebar ===== */
+.sidebar {
+  background: linear-gradient(180deg, var(--nav-1), var(--nav-2));
+  color: #cfd9ea;
+  display: flex;
+  flex-direction: column;
+  padding: 18px 12px;
+}
+
+.brand {
+  color: var(--card);
+  font-weight: 700;
+  font-size: 15px;
+  padding: 0 8px 22px;
+}
+
+.menu {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  flex: 1;
+}
+
+.menu a,
+.menu-config {
+  display: block;
+  padding: 9px 10px;
+  border-radius: 8px;
+  font-size: 14.5px;
+}
+
+.menu a:hover,
+.menu-cofig:hover {
+  background: rgba(255, 255, 255, 0.07);
+}
+
+.menu a.active {
+  background: var(--blue-active);
+  color: #ffffff;
+  font-weight: 600;
+}
+
+/* ===== Elementos comuns ===== */
+.tittle-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+h1 {
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(20, 36, 61, 0.04);
+}
+
+/* ===== Página de Contas ===== */
+.btn-add {
+  background: var(--green);
+  color: #ffffff;
+  border: 0;
+  border-radius: 8px;
+  padding: 9px 16px;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.tabela-card {
+  padding: 4px 8px;
+}
+
+.tabela {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.tabela th {
+  text-align: left;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--muted);
+  padding: 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+.tabela td {
+  padding: 14px 12px;
+  border-bottom: 1px solid var(--border);
+  font-size: 12px;
+}
+
+.tabela tr:last-child td {
+  border-bottom: 0;
+}
+
+.tabela td:first-child {
+  font-weight: 600;
+}
+
+.toggle {
+  appearance: none;
+  width: 34px;
+  height: 20px;
+  border-radius: 20px;
+  background: #cfd8e6;
+  position: relative;
+}
+
+.toggle::after {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #ffffff;
+  transition: left 0.15s;
+}
+
+.toggle:checked {
+  background: var(--green);
+}
+
+.toggle:checked::after {
+  left: 16px;
+}
+
+.modal {
+  border: 0;
+  border-radius: 12px;
+  padding: 24px;
+  width: 380px;
+  margin: auto;
+  color: var(--text);
+  box-shadow: 0 10px 40px rgba(10, 26, 51, 0.25);
+}
+
+.modal::backdrop {
+  background: rgba(10, 26, 51, 0.45);
+}
+
+.modal h2 {
+  font-size: 16px;
+  margin-bottom: 16px;
+}
+
+.modal label {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--muted);
+  margin-bottom: 12px;
+}
+
+.modal input,
+.modal select {
+  display: block;
+  width: 100%;
+  margin-top: 4px;
+  padding: 9px 10px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font: inherit;
+  font-size: 13px;
+  color: var(--text);
+  background: #ffffff;
+}
+
+.modal input:focus,
+.modal select:focus {
+  outline: 2px solid var(--green);
+  border-color: transparent;
+}
+
+.modal-botoes {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.btn-cancelar {
+  background: #ffffff;
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 9px 16px;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.erro {
+  color: #e5594a;
+  font-size: 12px;
+  min-height: 16px;
+}
