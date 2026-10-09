@@ -1,0 +1,20 @@
+.kpis{
+    display: grid;
+    grid-template-columns: repeat(4,1fr);
+    gap: 14px;
+}
+
+.charts{
+    display: grid;
+    grid-template-columns: 1.15fr 1fr;
+    gap: 14px;
+    flex: 1;
+    min-height: 0;
+}
+
+.donut-wrap{
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    flex: 1;
+}
