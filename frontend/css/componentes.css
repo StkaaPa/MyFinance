@@ -1,0 +1,241 @@
+/* Componentes partilhados: botões, separadores, tabela, interruptor, pop-up */
+.acoes {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.muted {
+  color: var(--muted);
+}
+
+.btn-add {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--green);
+  color: #fff;
+  border: 0;
+  border-radius: 8px;
+  padding: 9px 16px;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: filter 0.15s;
+}
+.btn-add:hover {
+  filter: brightness(1.1);
+}
+.btn-add:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  filter: none;
+}
+.btn-add .mais {
+  font-size: 16px;
+  line-height: 1;
+  font-weight: 500;
+}
+.btn-cancelar {
+  background: #fff;
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 9px 16px;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.aviso {
+  background: #fdecea;
+  color: #b3392c;
+  border: 1px solid #f6cfca;
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 12px;
+}
+.aviso[hidden] {
+  display: none;
+}
+
+.mes-select {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 8px 12px;
+}
+.mes-select select {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  font: inherit;
+  font-size: 12px;
+  color: var(--text);
+  cursor: pointer;
+  outline: none;
+}
+.mes-select .icon {
+  width: 15px;
+  height: 15px;
+  fill: none;
+  stroke: var(--text);
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.tabs {
+  display: flex;
+  gap: 6px;
+}
+.tab {
+  border: 0;
+  background: transparent;
+  padding: 7px 16px;
+  border-radius: 8px;
+  font: inherit;
+  font-size: 12px;
+  color: var(--muted);
+  cursor: pointer;
+}
+.tab:hover {
+  background: rgba(20, 36, 61, 0.05);
+}
+.tab.active {
+  background: var(--green);
+  color: #fff;
+  font-weight: 600;
+}
+
+.tabela-card {
+  padding: 4px 8px;
+}
+.tabela {
+  width: 100%;
+  border-collapse: collapse;
+}
+.tabela th {
+  text-align: left;
+  font-size: 12px;
+  font-weight: 600;
+  color: #3b4a63;
+  padding: 12px;
+  border-bottom: 1px solid var(--border);
+}
+.tabela td {
+  padding: 14px 12px;
+  border-bottom: 1px solid var(--border);
+  font-size: 12.5px;
+}
+.tabela tr:last-child td {
+  border-bottom: 0;
+}
+.tabela td:first-child {
+  font-weight: 600;
+}
+.tabela .dir {
+  text-align: right;
+}
+.tabela .vazio {
+  text-align: center;
+  color: var(--muted);
+  font-weight: 400;
+  padding: 28px 12px;
+}
+
+.toggle {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 34px;
+  height: 20px;
+  border-radius: 20px;
+  background: #cfd8e6;
+  position: relative;
+  cursor: pointer;
+  border: 0;
+  transition: background 0.15s;
+}
+.toggle::after {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #fff;
+  transition: left 0.15s;
+}
+.toggle:checked {
+  background: var(--green);
+}
+.toggle:checked::after {
+  left: 16px;
+}
+.toggle:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
+.modal {
+  border: 0;
+  border-radius: 12px;
+  padding: 24px;
+  width: 380px;
+  margin: auto;
+  color: var(--text);
+  box-shadow: 0 10px 40px rgba(10, 26, 51, 0.25);
+}
+.modal::backdrop {
+  background: rgba(10, 26, 51, 0.45);
+}
+.modal h2 {
+  font-size: 16px;
+  margin-bottom: 16px;
+}
+.modal label {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--muted);
+  margin-bottom: 12px;
+}
+.modal input,
+.modal select {
+  display: block;
+  width: 100%;
+  margin-top: 4px;
+  padding: 9px 10px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font: inherit;
+  font-size: 13px;
+  color: var(--text);
+  background: #fff;
+}
+.modal input:focus,
+.modal select:focus {
+  outline: 2px solid var(--green);
+  border-color: transparent;
+}
+.modal .nota {
+  font-size: 11.5px;
+  color: var(--muted);
+  margin: -4px 0 12px;
+}
+.modal-botoes {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 16px;
+}
+.erro {
+  color: #e5594a;
+  font-size: 12px;
+  min-height: 16px;
+}
