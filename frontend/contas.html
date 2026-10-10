@@ -3,11 +3,12 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="data:," />
     <title>MyFinance – Contas</title>
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/contas.css">
-    <link rel="stylesheet" href="css/sidebar.css">
-    <link rel="stylesheet" href="css/componentes.css">
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/sidebar.css" />
+    <link rel="stylesheet" href="css/componentes.css" />
+    <link rel="stylesheet" href="css/contas.css" />
   </head>
   <body>
     <div class="app">
@@ -17,7 +18,7 @@
         <div class="title-row">
           <h1>Contas</h1>
           <button class="btn-add" id="btn-adicionar">
-            <span class="mais">+</span>Adicionar conta
+            <span class="mais">+</span> Adicionar conta
           </button>
         </div>
 
@@ -54,10 +55,10 @@
         <label
           >Tipo
           <select name="tipo" required>
-            <option value="Conta Ordem">Conta à ordem</option>
-            <option value="Poupança">Poupança</option>
-            <option value="Investimento">Investimento</option>
-            <option value="Reforma">Reforma</option>
+            <option value="conta_ordem">Conta à ordem</option>
+            <option value="poupanca">Poupança</option>
+            <option value="investimento">Investimento</option>
+            <option value="reforma">Reforma</option>
           </select>
         </label>
         <p id="erro-conta" class="erro"></p>
@@ -71,7 +72,6 @@
     </dialog>
 
     <script src="js/sidebar.js"></script>
-    <script src="js/utils.js"></script>
     <script src="js/contas.js"></script>
   </body>
 </html>

@@ -3,64 +3,116 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>MyFinance–Receitas</title>
+    <link rel="icon" href="data:," />
+    <title>MyFinance – Receitas</title>
     <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/sidebar.css" />
+    <link rel="stylesheet" href="css/componentes.css" />
     <link rel="stylesheet" href="css/receitas.css" />
   </head>
   <body>
     <div class="app">
-      <aside class="sidebar">
-        <div class="brand">MyFinance-Receitas</div>
-        <nav class="menu">
-          <a href="dashboard.html">Dashboard</a>
-          <a href="contas.html">Contas</a>
-          <a href="despesas.html">Despesas</a>
-          <a href="receitas.html" class="active">Receitas</a>
-          <a href="investimentos.html">Investimentos</a>
-          <a href="fundo-emergencia.html">Fundo Emergência</a>
-          <a href="objetivos.html">Objetivos</a>
-          <a href="despesas-anuais.html">Despesas Anuais</a>
-          <a href="relatorios.html">Relatórios</a>
-        </nav>
-        <a href="configuracao.html" class="menu-config">Configuração</a>
-      </aside>
+      <aside id="sidebar" data-ativo="receitas"></aside>
+
       <main class="content">
         <div class="title-row">
           <h1>Receitas</h1>
-          <button class="btn-add">Adicionar receita</button>
-        </div>
-        <div class="tabs">
-          <button class="tab active">Todas</button>
-          <button class="tab">Salário</button>
-          <button class="tab">Cartão refeição</button>
-          <button class="tab">Outros</button>
-        </div>
-        <article class="card box">
-          <span class="muted">Total do mês</span>
-          <strong class="grande" data-campo="total">—</strong>
-          <div class="donut-wrap">
-            <div class="donut">
-              <span data-campo="centro">—</span>
-            </div>
-            <ul class="legend" id="legenda"></ul>
+          <div class="acoes">
+            <label class="mes-select">
+              <select id="mes" aria-label="Mês"></select>
+              <svg class="icon" viewBox="0 0 24 24">
+                <path
+                  d="M5 5h14a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1zM4 10h16M9 3v4M15 3v4"
+                />
+              </svg>
+            </label>
+            <button class="btn-add" id="btn-adicionar">
+              <span class="mais">+</span> Adicionar receita
+            </button>
           </div>
-        </article>
-        <h2>Últimas receitas</h2>
-        <section class="card tabela-card">
-          <table class="tabela">
-            <thead>
-              <tr>
-                <th>Data</th>
-                <th>Descrição</th>
-                <th>Categoria</th>
-                <th>Valor</th>
-              </tr>
-            </thead>
-            <tbody id="lista"></tbody>
-          </table>
+        </div>
+
+        <p class="aviso" id="aviso" hidden></p>
+
+        <div class="tabs" id="tabs"></div>
+
+        <section class="card painel">
+          <div class="resumo">
+            <div class="total-bloco">
+              <span class="muted">Total do mês</span>
+              <strong class="total" id="total">€ 0,00</strong>
+              <span class="delta" id="variacao"></span>
+            </div>
+            <div class="distribuicao">
+              <div class="donut" id="donut"><span id="centro">€ 0</span></div>
+              <ul class="legenda" id="legenda"></ul>
+            </div>
+          </div>
+
+          <h2>Últimas receitas</h2>
+          <div class="scroll">
+            <table class="tabela cinza">
+              <thead>
+                <tr>
+                  <th>Data</th>
+                  <th>Descrição</th>
+                  <th>Categoria</th>
+                  <th class="dir">Valor</th>
+                </tr>
+              </thead>
+              <tbody id="corpo"></tbody>
+            </table>
+          </div>
         </section>
       </main>
     </div>
+
+    <dialog id="modal-receita" class="modal">
+      <form id="form-receita">
+        <h2>Adicionar receita</h2>
+        <label
+          >Mês
+          <select name="mes" required></select>
+        </label>
+        <label
+          >Categoria
+          <select name="categoria" required></select>
+        </label>
+        <label
+          >Valor (€)
+          <input
+            type="text"
+            name="valor"
+            inputmode="decimal"
+            autocomplete="off"
+            placeholder="0,00"
+            required
+          />
+        </label>
+        <label
+          >O que fazer ao valor
+          <select name="modo">
+            <option value="somar">Somar ao valor já registado</option>
+            <option value="definir">
+              Definir como valor do mês (corrigir)
+            </option>
+          </select>
+        </label>
+        <p class="nota" id="nota-receita"></p>
+        <p id="erro-receita" class="erro"></p>
+        <div class="modal-botoes">
+          <button type="button" id="btn-cancelar" class="btn-cancelar">
+            Cancelar
+          </button>
+          <button type="submit" class="btn-add" id="btn-guardar">
+            Guardar
+          </button>
+        </div>
+      </form>
+    </dialog>
+
+    <script src="js/sidebar.js"></script>
+    <script src="js/util.js"></script>
     <script src="js/receitas.js"></script>
   </body>
 </html>

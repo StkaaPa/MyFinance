@@ -3,9 +3,11 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="data:," />
     <title>MyFinance – Dashboard</title>
     <link rel="stylesheet" href="css/style.css" />
     <link rel="stylesheet" href="css/sidebar.css" />
+    <link rel="stylesheet" href="css/componentes.css" />
     <link rel="stylesheet" href="css/dashboard.css" />
   </head>
   <body>
@@ -13,18 +15,21 @@
       <aside id="sidebar" data-ativo="dashboard"></aside>
 
       <main class="content">
-        <div class="saudacao">Olá, Samuel <span class="avatar">G.</span></div>
+        <div class="saudacao">Olá, Samuel <span class="avatar">G</span></div>
 
         <div class="title-row">
           <h1>Dashboard</h1>
-          <label class="mes-select">
-            <select id="mes"></select>
-            <svg class="icon" viewBox="0 0 24 24">
-              <path
-                d="M5 5h14a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1zM4 10h16M9 3v4M15 3v4"
-              />
-            </svg>
-          </label>
+          <div class="acoes">
+            <label class="mes-select">
+              <select id="mes"></select>
+              <svg class="icon" viewBox="0 0 24 24">
+                <path
+                  d="M5 5h14a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1zM4 10h16M9 3v4M15 3v4"
+                />
+              </svg>
+            </label>
+            <a class="btn-add" href="fecho.html">Fechar mês</a>
+          </div>
         </div>
 
         <section class="kpis">
