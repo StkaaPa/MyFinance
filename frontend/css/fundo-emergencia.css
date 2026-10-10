@@ -1,0 +1,14 @@
+.topo {
+  display: flex;
+  align-items: center;
+  gap: 48px;
+}
+.info {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 12px;
+}
+.info dd {
+  font-weight: 700;
+}

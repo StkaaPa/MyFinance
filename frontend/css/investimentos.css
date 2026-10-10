@@ -1,0 +1,10 @@
+.kpis {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+.donut-wrap {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
