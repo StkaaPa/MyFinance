@@ -9,7 +9,7 @@ router = APIRouter(prefix="/api/contas", tags=["contas"])
 class NovaConta(BaseModel):
     nome: str = Field(min_length=1)
     instituicao: str = Field(min_length=1)
-    tipo: Literal["conta_ordem", "poupanca", "investimento", "reforma"]
+    tipo: Literal["Conta Ordem", "Poupança", "Investimento", "Reforma"]
 
 
 class EstadoConta(BaseModel):
