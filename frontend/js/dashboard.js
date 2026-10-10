@@ -2,7 +2,7 @@ const ENDPOINT = "/api/dashboard";
 
 async function carregar() {
   try {
-    const r = await fetch(ENPOINT);
+    const r = await fetch(ENDPOINT);
     if (!r.ok) throw new Error(r.status);
     preencher(await r.json());
   } catch (e) {
