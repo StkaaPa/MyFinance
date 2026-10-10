@@ -39,7 +39,7 @@ a {
 /* ===== Estrutura: sidebar + conteúdo ===== */
 .app {
   display: grid;
-  grid-template-columns: .15fr 1fr;
+  grid-template-columns: 0.15fr 1fr;
   height: 100vh;
 }
 
@@ -257,4 +257,125 @@ h1 {
   color: #e5594a;
   font-size: 12px;
   min-height: 16px;
+}
+
+/* ===== Componentes partilhados (adicionar ao fim do style.css) ===== */
+.menu-config.active {
+  background: var(--blue-active);
+  color: #fff;
+  font-weight: 600;
+}
+.box {
+  padding: 16px 18px;
+}
+h2 {
+  font-size: 13.5px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.muted {
+  color: var(--muted);
+  font-size: 12px;
+}
+.tabs {
+  display: flex;
+  gap: 6px;
+}
+.tab {
+  border: 0;
+  background: transparent;
+  padding: 7px 14px;
+  border-radius: 8px;
+  font: inherit;
+  font-size: 12px;
+  color: var(--muted);
+  cursor: pointer;
+}
+.tab.active {
+  background: var(--green);
+  color: #fff;
+  font-weight: 600;
+}
+.kpi {
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.kpi-label {
+  font-size: 12px;
+  color: var(--muted);
+}
+.kpi-value {
+  font-size: 24px;
+  font-weight: 700;
+}
+.donut {
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+  background: conic-gradient(#e4e9f2 0 100%);
+  display: grid;
+  place-items: center;
+  position: relative;
+  flex: none;
+}
+.donut::before {
+  content: "";
+  position: absolute;
+  inset: 22px;
+  background: #fff;
+  border-radius: 50%;
+}
+.donut span {
+  position: relative;
+  font-weight: 700;
+}
+.legend {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 12px;
+}
+.placeholder {
+  flex: 1;
+  min-height: 120px;
+  display: grid;
+  place-items: center;
+  color: var(--muted);
+}
+.progress {
+  height: 8px;
+  border-radius: 8px;
+  background: var(--border);
+  overflow: hidden;
+}
+.progress > i {
+  display: block;
+  height: 100%;
+  background: var(--green);
+}
+.banner {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #e4f5ef;
+  border: 1px solid #cdeadf;
+  border-radius: 12px;
+  padding: 12px 16px;
+}
+.banner p {
+  flex: 1;
+}
+.btn-primary {
+  background: var(--green);
+  color: #fff;
+  border: 0;
+  padding: 9px 20px;
+  border-radius: 8px;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
 }
