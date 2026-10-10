@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="pt-PT">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>MyFinance–Despesas</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/despesas.css" />
+  </head>
+  <body>
+    <div class="app">
+      <aside class="sidebar">
+        <div class="brand">MyFinance-Despesas</div>
+        <nav class="menu">
+          <a href="dashboard.html">Dashboard</a>
+          <a href="contas.html">Contas</a>
+          <a href="despesas.html" class="active">Despesas</a>
+          <a href="receitas.html">Receitas</a>
+          <a href="investimentos.html">Investimentos</a>
+          <a href="fundo-emergencia.html">Fundo Emergência</a>
+          <a href="objetivos.html">Objetivos</a>
+          <a href="despesas-anuais.html">Despesas Anuais</a>
+          <a href="relatorios.html">Relatórios</a>
+        </nav>
+        <a href="configuracao.html" class="menu-config">Configuração</a>
+      </aside>
+      <main class="content">
+        <div class="title-row">
+          <h1>Despesas</h1>
+          <button class="btn-add">Adicionar Despesa</button>
+        </div>
+        <div class="tabs">
+          <button class="tab active">Todas</button>
+          <button class="tab">Categorias</button>
+          <button class="tab">Fixo</button>
+          <button class="tab">Variável</button>
+        </div>
+        <article class="card box">
+          <span class="muted">Total do mês</span>
+          <strong class="grande" data-campo="total">—</strong>
+          <div class="donut-wrap">
+            <div class="donut">
+              <span data-campo="centro">—</span>
+            </div>
+            <ul class="legend" id="legenda"></ul>
+          </div>
+        </article>
+        <h2>Últimas despesas</h2>
+        <section class="card tabela-card">
+          <table class="tabela">
+            <thead>
+              <tr>
+                <th>Data</th>
+                <th>Descrição</th>
+                <th>Categoria</th>
+                <th>Valor</th>
+              </tr>
+            </thead>
+            <tbody id="lista"></tbody>
+          </table>
+        </section>
+      </main>
+    </div>
+    <script src="js/despesas.js"></script>
+  </body>
+</html>
