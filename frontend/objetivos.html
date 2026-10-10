@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="pt-PT">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>MyFinance–Objetivos</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/objetivos.css" />
+  </head>
+  <body>
+    <div class="app">
+      <aside class="sidebar">
+        <div class="brand">MyFinance</div>
+        <nav class="menu">
+          <a href="dashboard.html">Dashboard</a>
+          <a href="contas.html">Contas</a>
+          <a href="despesas.html">Despesas</a>
+          <a href="receitas.html">Receitas</a>
+          <a href="investimentos.html">Investimentos</a>
+          <a href="fundo-emergencia.html">Fundo Emergência</a>
+          <a href="objetivos.html" class="active">Objetivos</a>
+          <a href="despesas-anuais.html">Despesas Anuais</a>
+          <a href="relatorios.html">Relatórios</a>
+        </nav>
+        <a href="configuracao.html" class="menu-config">Configuração</a>
+      </aside>
+      <main class="content">
+        <div class="title-row">
+          <h1>Objetivos</h1>
+          <button class="btn-add">Adicionar objetivo</button>
+        </div>
+        <div class="tabs">
+          <button class="tab active">Todos</button>
+          <button class="tab">Em andamento</button>
+          <button class="tab">Concluídos</button>
+        </div>
+        <div id="lista-objetivos">
+          <p class="muted">Sem objetivos.</p>
+        </div>
+      </main>
+    </div>
+    <script src="js/objetivos.js"></script>
+  </body>
+</html>

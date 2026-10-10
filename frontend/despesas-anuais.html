@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="pt-PT">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>MyFinance–Despesas Anuais</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/despesas-anuais.css" />
+  </head>
+  <body>
+    <div class="app">
+      <aside class="sidebar">
+        <div class="brand">MyFinance</div>
+        <nav class="menu">
+          <a href="dashboard.html">Dashboard</a>
+          <a href="contas.html">Contas</a>
+          <a href="despesas.html">Despesas</a>
+          <a href="receitas.html">Receitas</a>
+          <a href="investimentos.html">Investimentos</a>
+          <a href="fundo-emergencia.html">Fundo Emergência</a>
+          <a href="objetivos.html">Objetivos</a>
+          <a href="despesas-anuais.html" class="active">Despesas Anuais</a>
+          <a href="relatorios.html">Relatórios</a>
+        </nav>
+        <a href="configuracao.html" class="menu-config">Configuração</a>
+      </aside>
+      <main class="content">
+        <div class="title-row">
+          <h1>Despesas Anuais</h1>
+          <button class="btn-add">Adicionar despesa anual</button>
+        </div>
+        <section class="card tabela-card">
+          <table class="tabela">
+            <thead>
+              <tr>
+                <th>Data</th>
+                <th>Descrição</th>
+                <th>Valor</th>
+                <th>Estado</th>
+              </tr>
+            </thead>
+            <tbody id="lista"></tbody>
+          </table>
+        </section>
+        <section class="banner">
+          <p data-campo="resumo">—</p>
+        </section>
+      </main>
+    </div>
+    <script src="js/despesas-anuais.js"></script>
+  </body>
+</html>

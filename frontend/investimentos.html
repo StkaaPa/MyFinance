@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="pt-PT">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>MyFinance–Investimentos</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/investimentos.css" />
+  </head>
+  <body>
+    <div class="app">
+      <aside class="sidebar">
+        <div class="brand">MyFinance</div>
+        <nav class="menu">
+          <a href="dashboard.html">Dashboard</a>
+          <a href="contas.html">Contas</a>
+          <a href="despesas.html">Despesas</a>
+          <a href="receitas.html">Receitas</a>
+          <a href="investimentos.html" class="active">Investimentos</a>
+          <a href="fundo-emergencia.html">Fundo Emergência</a>
+          <a href="objetivos.html">Objetivos</a>
+          <a href="despesas-anuais.html">Despesas Anuais</a>
+          <a href="relatorios.html">Relatórios</a>
+        </nav>
+        <a href="configuracao.html" class="menu-config">Configuração</a>
+      </aside>
+      <main class="content">
+        <div class="title-row">
+          <h1>Investimentos</h1>
+          <button class="btn-add">Adicionar investimento</button>
+        </div>
+        <div class="tabs">
+          <button class="tab active">Todos</button>
+          <button class="tab">ETFs</button>
+          <button class="tab">Ações</button>
+          <button class="tab">Cripto</button>
+          <button class="tab">PPR</button>
+        </div>
+        <section class="kpis">
+          <article class="card kpi">
+            <span class="kpi-label">Total investido</span>
+            <strong class="kpi-value" data-campo="total">—</strong>
+          </article>
+          <article class="card kpi">
+            <span class="kpi-label">Rendimento (YTD)</span>
+            <strong class="kpi-value" data-campo="rendimento">—</strong>
+          </article>
+        </section>
+        <article class="card box">
+          <div class="donut-wrap">
+            <div class="donut">
+              <span data-campo="centro">—</span>
+            </div>
+            <ul class="legend" id="legenda"></ul>
+          </div>
+        </article>
+        <h2>Últimos movimentos</h2>
+        <section class="card tabela-card">
+          <table class="tabela">
+            <thead>
+              <tr>
+                <th>Data</th>
+                <th>Ativo</th>
+                <th>Tipo</th>
+                <th>Valor</th>
+              </tr>
+            </thead>
+            <tbody id="lista"></tbody>
+          </table>
+        </section>
+      </main>
+    </div>
+    <script src="js/investimentos.js"></script>
+  </body>
+</html>
