@@ -1,8 +1,8 @@
 /* Página Contas */
-.tittle-row {
+.title-row {
+  margin-top: -4px;
   display: flex;
   justify-content: space-between;
-  align-items: center;
 }
 
 .tabela .muted-td {
