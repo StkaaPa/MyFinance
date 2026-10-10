@@ -301,15 +301,20 @@ form.addEventListener("submit", async (evento) => {
   const corpo = {
     mes: form.elements.mes.value,
     categoria_id: Number(form.elements.categoria.value),
-    valor: Number(form.elements.valor.value),
+    valor: lerValor(form.elements.valor.value),
     modo: form.elements.modo.value,
   };
   if (!corpo.mes || !corpo.categoria_id) {
     erro.textContent = "Escolhe o mês e a categoria.";
     return;
   }
-  if (!Number.isFinite(corpo.valor) || corpo.valor < 0) {
-    erro.textContent = "Indica um valor igual ou superior a zero.";
+  if (
+    corpo.valor === null ||
+    !Number.isFinite(corpo.valor) ||
+    corpo.valor < 0
+  ) {
+    erro.textContent =
+      "Indica um valor válido, igual ou superior a zero (ex.: 52,30).";
     return;
   }
   try {

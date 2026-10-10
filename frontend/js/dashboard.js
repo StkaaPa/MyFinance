@@ -13,10 +13,10 @@ const MESES = [
   "Dezembro",
 ];
 const TIPOS = {
-  reforma: ["PPR", "#2f6be0"],
-  investimento: ["Investimentos", "#e0b84a"],
-  poupanca: ["Poupança", "#f49a4a"],
-  conta_ordem: ["Dinheiro", "#8a4fc4"],
+  Reforma: ["PPR", "#2f6be0"],
+  Investimento: ["Investimentos", "#e0b84a"],
+  Poupança: ["Poupança", "#f49a4a"],
+  "Conta Ordem": ["Dinheiro", "#8a4fc4"],
 };
 
 const $ = (id) => document.getElementById(id);
