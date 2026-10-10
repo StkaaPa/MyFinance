@@ -93,3 +93,26 @@ SELECT * FROM saldos_conta;
 SELECT * FROM movimentos_categoria;
 
 TRUNCATE contas, categorias, fechos_mensais, saldos_conta, movimentos_categoria RESTART IDENTITY;
+
+/* Criação das tabelas OBJETIVOS, DESPESAS_ANUAIS e CONFIGURACOES*/
+CREATE TABLE objetivos (
+  id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  nome TEXT NOT NULL,
+  valor_alvo NUMERIC(12,2) NOT NULL CHECK (valor_alvo > 0),
+  valor_atual NUMERIC(12,2) NOT NULL DEFAULT 0 CHECK (valor_atual >= 0),
+  contribuicao_mensal NUMERIC(12,2) NOT NULL DEFAULT 0 CHECK (contribuicao_mensal >= 0),
+  fundo_emergencia BOOLEAN NOT NULL DEFAULT FALSE,
+  concluido BOOLEAN NOT NULL DEFAULT FALSE
+);
+CREATE UNIQUE INDEX um_fundo_emergencia ON objetivos (fundo_emergencia) WHERE fundo_emergencia;
+
+CREATE TABLE despesas_anuais (
+  id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  data DATE NOT NULL,
+  descricao TEXT NOT NULL,
+  valor NUMERIC(12,2) NOT NULL CHECK (valor >= 0),
+  pago BOOLEAN NOT NULL DEFAULT FALSE
+);
+
+CREATE TABLE configuracoes (chave TEXT PRIMARY KEY, valor TEXT NOT NULL);
+INSERT INTO configuracoes VALUES ('dia_inicio','27'), ('moeda','EUR'), ('idioma','pt');
