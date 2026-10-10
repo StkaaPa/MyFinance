@@ -10,12 +10,12 @@ router = APIRouter(prefix="/api/fechos", tags=["fecho mensal"])
 
 class SaldoIn(BaseModel):
     conta_id: int
-    saldo: Decimal
+    saldo: Decimal = Field(max_digits=12, decimal_places=2)
 
 
 class MovimentoIn(BaseModel):
     categoria_id: int
-    valor: Decimal = Field(ge=0)
+    valor: Decimal = Field(ge=0, max_digits=12, decimal_places=2)
 
 
 class NovoFecho(BaseModel):
@@ -37,14 +37,26 @@ def listar_fechos():
 def dados_formulario():
     """O que o pop-up de fecho precisa: contas ativas, categorias folha ativas e datas sugeridas."""
     with ligar_database() as conn:
-        contas = conn.execute("SELECT id, nome, tipo FROM contas WHERE ativo ORDER BY id").fetchall()
+        ultimo = conn.execute("SELECT id, data_fim FROM fechos_mensais ORDER BY mes_referencia DESC LIMIT 1").fetchone()
+        ultimo_id = ultimo["id"] if ultimo else None
+        # saldo_anterior / valor_anterior: o que registaste no último fecho (ajuda a preencher e a comparar)
+        contas = conn.execute("""
+            SELECT c.id, c.nome, c.tipo, s.saldo AS saldo_anterior
+            FROM contas c LEFT JOIN saldos_conta s ON s.conta_id = c.id AND s.fecho_id = %s
+            WHERE c.ativo ORDER BY c.id""", (ultimo_id,)).fetchall()
+        # só categorias "folha" (sem subcategorias): é nelas que se guardam valores
         cats = conn.execute("""
-            SELECT c.id, c.nome, c.tipo, p.nome AS categoria_pai FROM categorias c
+            SELECT c.id, c.nome, c.tipo, p.nome AS categoria_pai, m.valor AS valor_anterior
+            FROM categorias c
             LEFT JOIN categorias p ON p.id = c.categoria_pai_id
-            WHERE c.ativo AND NOT EXISTS (SELECT 1 FROM categorias f WHERE f.categoria_pai_id = c.id AND f.ativo)
-            ORDER BY c.tipo, COALESCE(p.nome, c.nome), c.nome""").fetchall()
-        ultimo = conn.execute("SELECT data_fim FROM fechos_mensais ORDER BY mes_referencia DESC LIMIT 1").fetchone()
+            LEFT JOIN movimentos_categoria m ON m.categoria_id = c.id AND m.fecho_id = %s
+            WHERE c.ativo AND NOT EXISTS (SELECT 1 FROM categorias f WHERE f.categoria_pai_id = c.id)
+            ORDER BY c.tipo, COALESCE(p.nome, c.nome), c.nome""", (ultimo_id,)).fetchall()
         dia = conn.execute("SELECT valor FROM configuracoes WHERE chave = 'dia_inicio'").fetchone()
+    for c in contas:
+        c["saldo_anterior"] = float(c["saldo_anterior"]) if c["saldo_anterior"] is not None else None
+    for c in cats:
+        c["valor_anterior"] = float(c["valor_anterior"]) if c["valor_anterior"] is not None else None
     return {"contas": contas, "categorias": cats,
             "data_inicio_sugerida": (ultimo["data_fim"] + timedelta(days=1)) if ultimo else None,
             "dia_inicio_configurado": int(dia["valor"]) if dia else 27}
@@ -55,6 +67,10 @@ def fechar_mes(novo: NovoFecho):
     """Grava o fecho, os saldos e os movimentos numa só transação: ou fica tudo, ou nada."""
     if novo.data_fim < novo.data_inicio:
         raise HTTPException(422, "A data de fim é anterior à de início")
+    # Convenção: o mês leva o nome do mês em que o período TERMINA (27/08 a 26/09 = setembro)
+    if novo.data_fim.strftime("%Y-%m") != novo.mes_referencia:
+        raise HTTPException(422, "O mês de referência tem de ser o mês em que o período termina "
+                                 f"(a data de fim é {novo.data_fim.strftime('%d/%m/%Y')}).")
     ids_c = [s.conta_id for s in novo.saldos]
     ids_m = [m.categoria_id for m in novo.movimentos]
     if len(set(ids_c)) != len(ids_c) or len(set(ids_m)) != len(ids_m):
@@ -69,6 +85,9 @@ def fechar_mes(novo: NovoFecho):
                           (ids_m,)).fetchall()
         if len(ok) != len(ids_m):
             raise HTTPException(422, "Só se guardam valores em categorias ativas sem subcategorias")
+        if conn.execute("SELECT 1 FROM fechos_mensais WHERE mes_referencia = %s::date",
+                        (novo.mes_referencia + "-01",)).fetchone():
+            raise HTTPException(409, "Esse mês já está fechado")
         if conn.execute("SELECT 1 FROM fechos_mensais WHERE data_inicio <= %s AND data_fim >= %s",
                         (novo.data_fim, novo.data_inicio)).fetchone():
             raise HTTPException(409, "O período sobrepõe-se a um fecho existente")
