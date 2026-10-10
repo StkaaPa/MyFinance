@@ -5,63 +5,91 @@ const TIPOS = {
   Reforma: "Reforma",
 };
 
-async function carregarContas() {
-  const resposta = await fetch("/api/contas");
-  if (!resposta.ok) {
-    throw new Error("Erro ao carregar contas: " + resposta.status);
-  }
-  const contas = await resposta.json();
-  desenharTabela(contas);
+const corpo = $("lista-contas");
+const aviso = $("aviso");
+const modal = $("modal-conta");
+const form = $("form-conta");
+const erro = $("erro-conta");
+
+function mostrarAviso(msg) {
+  aviso.textContent = msg;
+  aviso.hidden = !msg;
 }
 
-function celula(texto) {
-  const td = document.createElement("td");
-  td.textContent = texto;
-  return td;
+/* ---------- Tabela ---------- */
+
+// O interruptor "Ativo": ao mudar, envia PATCH /api/contas/{id}. Se falhar, volta ao estado anterior.
+function interruptor(conta, linha) {
+  const input = criar("input", "toggle");
+  input.type = "checkbox";
+  input.checked = conta.ativo;
+  input.setAttribute("aria-label", "Conta ativa");
+  input.addEventListener("change", async () => {
+    const novo = input.checked;
+    input.disabled = true;
+    try {
+      await api("/api/contas/" + conta.id, "PATCH", { ativo: novo });
+      conta.ativo = novo;
+      linha.classList.toggle("inativa", !novo);
+      mostrarAviso("");
+    } catch (e) {
+      input.checked = !novo;
+      mostrarAviso("Não foi possível alterar a conta: " + e.message);
+    } finally {
+      input.disabled = false;
+    }
+  });
+  return input;
 }
 
-function celulaAtivo(ativo) {
-  const td = document.createElement("td");
-  const interruptor = document.createElement("input");
-  interruptor.type = "checkbox";
-  interruptor.className = "toggle";
-  interruptor.checked = ativo;
-  interruptor.disabled = true;
-  td.append(interruptor);
-  return td;
-}
-
-function desenharTabela(contas) {
-  const corpo = document.getElementById("lista-contas");
+function desenhar(contas) {
   corpo.replaceChildren();
-  for (const conta of contas) {
-    const linha = document.createElement("tr");
-    linha.append(
-      celula(conta.nome),
-      celula(conta.instituicao),
-      celula("-"),
-      celula(TIPOS[conta.tipo] ?? conta.tipo),
-      celulaAtivo(conta.ativo),
+  if (!contas.length) {
+    const tr = criar("tr");
+    const td = criar(
+      "td",
+      "vazio",
+      "Ainda não tens contas. Carrega em «+ Adicionar conta».",
     );
-    corpo.append(linha);
+    td.colSpan = 5;
+    tr.append(td);
+    corpo.append(tr);
+    return;
+  }
+  for (const c of contas) {
+    const tr = criar("tr", c.ativo ? "" : "inativa");
+    const tdAtivo = criar("td");
+    tdAtivo.append(interruptor(c, tr));
+    tr.append(
+      criar("td", "", c.nome),
+      criar("td", "muted-td", c.instituicao),
+      criar("td", "", c.saldo == null ? "—" : eur(c.saldo)),
+      criar("td", "muted-td", TIPOS[c.tipo] ?? c.tipo),
+      tdAtivo,
+    );
+    corpo.append(tr);
   }
 }
 
-carregarContas().catch(console.error);
+async function carregarContas() {
+  try {
+    desenhar(await api("/api/contas"));
+    mostrarAviso("");
+  } catch (e) {
+    console.error(e);
+    mostrarAviso("Não foi possível carregar as contas: " + e.message);
+  }
+}
 
-const modal = document.getElementById("modal-conta");
-const form = document.getElementById("form-conta");
-const erro = document.getElementById("erro-conta");
+/* ---------- Pop-up "Adicionar conta" ---------- */
 
-document.getElementById("btn-adicionar").addEventListener("click", () => {
+$("btn-adicionar").addEventListener("click", () => {
   form.reset();
   erro.textContent = "";
   modal.showModal();
 });
 
-document.getElementById("btn-cancel").addEventListener("click", () => {
-  modal.close();
-});
+$("btn-cancelar").addEventListener("click", () => modal.close());
 
 form.addEventListener("submit", async (evento) => {
   evento.preventDefault();
@@ -70,33 +98,18 @@ form.addEventListener("submit", async (evento) => {
     instituicao: form.elements.instituicao.value.trim(),
     tipo: form.elements.tipo.value,
   };
-
   if (!dados.nome || !dados.instituicao) {
-    erro.textContent = "Prenche o nome e a instituição!";
+    erro.textContent = "Preenche o nome e a instituição.";
     return;
   }
-
   try {
-    const resposta = await fetch("/api/contas", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(dados),
-    });
-
-    const resultado = await resposta.json();
-
-    console.log("STATUS:", resposta.status);
-    console.log("RESPOSTA API:", resultado);
-
-    if (!resposta.ok) {
-      throw new Error("Estado" + resposta.status);
-    }
+    await api("/api/contas", "POST", dados);
   } catch (e) {
-    erro.textContent = "Não foi possível guardar a conta.";
-    console.error(e);
+    erro.textContent = "Não foi possível guardar a conta: " + e.message;
     return;
   }
-
   modal.close();
   carregarContas();
 });
+
+carregarContas();

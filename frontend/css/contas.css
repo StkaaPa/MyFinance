@@ -1,0 +1,8 @@
+/* Página Contas */
+.tabela .muted-td {
+  color: var(--muted);
+  font-weight: 400;
+}
+.tabela tr.inativa td:not(:last-child) {
+  opacity: 0.5;
+}
