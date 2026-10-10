@@ -10,7 +10,7 @@
   padding: 18px 20px;
   display: flex;
   flex-direction: column;
-  flex: 1;
+  flex: 0 1 auto;
   min-height: 0;
 }
 
@@ -93,7 +93,7 @@
 .legenda {
   list-style: none;
   flex: 1;
-  max-width: 430px;
+  max-width: 560px;
   max-height: 150px;
   overflow: auto;
   display: flex;
@@ -136,7 +136,7 @@
   border-top: 1px solid var(--border);
 }
 .scroll {
-  flex: 1;
+  flex: 0 1 auto;
   min-height: 0;
   overflow: auto;
   border: 1px solid var(--border);

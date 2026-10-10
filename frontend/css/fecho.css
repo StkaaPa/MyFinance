@@ -1,0 +1,262 @@
+/* Página do fluxo de fecho e pop-up "Fechar mês" */
+
+/* ----- Página (fecho.html) ----- */
+.fluxo-titulo h1 {
+  font-size: 20px;
+}
+.fluxo-titulo p {
+  color: var(--muted);
+  font-size: 13px;
+  margin-top: 4px;
+}
+
+.passos {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 22px;
+  margin-top: 18px;
+}
+.passo {
+  position: relative;
+  padding: 30px 16px 18px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  min-height: 170px;
+}
+.passo:not(:last-child)::after {
+  content: "›";
+  position: absolute;
+  right: -16px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #b7c3d6;
+  font-size: 20px;
+}
+.passo .numero {
+  position: absolute;
+  top: -14px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--green);
+  color: #fff;
+  font-weight: 700;
+  display: grid;
+  place-items: center;
+  box-shadow: 0 0 0 4px var(--bg);
+}
+.passo h2 {
+  font-size: 13.5px;
+  font-weight: 700;
+}
+.passo p {
+  font-size: 11.5px;
+  color: var(--muted);
+  line-height: 1.45;
+  max-width: 180px;
+}
+.passo .icon {
+  margin-top: auto;
+  width: 26px;
+  height: 26px;
+  fill: none;
+  stroke: var(--green);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.passo .icon.azul {
+  stroke: #2f6be0;
+}
+
+.btn-fechar {
+  align-self: center;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: min(420px, 100%);
+  margin-top: 18px;
+  padding: 12px 20px;
+  border: 0;
+  border-radius: 8px;
+  background: var(--green);
+  color: #fff;
+  font: inherit;
+  font-size: 13.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: filter 0.15s;
+}
+.btn-fechar:hover {
+  filter: brightness(1.1);
+}
+.btn-fechar .icon {
+  width: 15px;
+  height: 15px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linejoin: round;
+}
+
+.nota-info {
+  margin-top: 14px;
+  padding: 12px 16px;
+  text-align: center;
+  font-size: 12px;
+  color: var(--muted);
+  background: #eaf2fc;
+  border: 1px solid #d3e3f7;
+  border-radius: 8px;
+}
+
+/* ----- Pop-up (criado por fecho.js) ----- */
+.modal-fecho {
+  width: min(780px, 94vw);
+  padding: 0;
+  overflow: hidden;
+}
+.modal-fecho[open] {
+  display: flex;
+  flex-direction: column;
+  max-height: 92vh;
+}
+.modal-fecho form {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  flex: 1;
+}
+.fecho-topo {
+  padding: 22px 26px 12px;
+}
+.fecho-topo h2 {
+  margin-bottom: 4px;
+}
+.fecho-topo p {
+  font-size: 12px;
+  color: var(--muted);
+}
+.fecho-corpo {
+  padding: 4px 26px 14px;
+  overflow: auto;
+  flex: 1;
+  min-height: 0;
+}
+.fecho-corpo section {
+  margin-top: 14px;
+}
+.fecho-corpo h3 {
+  font-size: 13px;
+  font-weight: 700;
+  padding-bottom: 6px;
+  margin-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+}
+.fecho-corpo h3 span {
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.fecho-periodo {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 12px;
+  align-items: end;
+}
+.fecho-periodo label {
+  margin-bottom: 0;
+}
+.fecho-ref {
+  padding: 9px 10px;
+  background: #f3f6fb;
+  border-radius: 8px;
+  font-size: 12px;
+}
+.fecho-ref strong {
+  display: block;
+  font-size: 14px;
+  margin-top: 2px;
+}
+
+.fecho-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px 18px;
+}
+.fecho-grid label {
+  margin-bottom: 0;
+}
+.fecho-grid .nome {
+  display: block;
+  color: var(--text);
+  font-weight: 600;
+}
+.fecho-grid .nome em {
+  font-style: normal;
+  color: var(--muted);
+  font-weight: 400;
+}
+.fecho-grid small {
+  display: block;
+  margin-top: 3px;
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--muted);
+  min-height: 14px;
+}
+.fecho-grid input.invalido {
+  outline: 2px solid #e5594a;
+  border-color: transparent;
+}
+.fecho-vazio {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.fecho-rodape {
+  padding: 12px 26px 18px;
+  border-top: 1px solid var(--border);
+  background: #fafbfd;
+}
+.fecho-totais {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 26px;
+  font-size: 12px;
+  color: var(--muted);
+}
+.fecho-totais b {
+  display: block;
+  font-size: 15px;
+  color: var(--text);
+  margin-top: 1px;
+}
+.fecho-rodape .erro {
+  margin-top: 8px;
+}
+.fecho-rodape .modal-botoes {
+  margin-top: 6px;
+}
+
+@media (max-height: 760px) {
+  .passos {
+    margin-top: 14px;
+  }
+  .passo {
+    min-height: 140px;
+    padding-top: 26px;
+  }
+  .btn-fechar {
+    margin-top: 12px;
+  }
+}
