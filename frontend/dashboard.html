@@ -1,72 +1,87 @@
 <!doctype html>
-<html lang="en">
+<html lang="pt-PT">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>MyFinance – Dashboard</title>
     <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/sidebar.css" />
     <link rel="stylesheet" href="css/dashboard.css" />
-    <title>MyFinance-Dashboard</title>
   </head>
   <body>
     <div class="app">
-      <aside class="sidebar">
-        <div class="brand">MyFinance</div>
-        <nav class="menu">
-          <a href="dashboard.html" class="active">Dashboard</a>
-          <a href="contas.html"">Contas</a>
-          <a href="despesas.html">Despesas</a>
-          <a href="receitas.html">Receitas</a>
-          <a href="investimentos.html">Investimentos</a>
-          <a href="fundo-emergencia.html">Fundo Emergência</a>
-          <a href="objetivos.html">Objetivos</a>
-          <a href="despesas-anuais.html">Despesas Anuais</a>
-          <a href="relatorio.html">Relatórios</a>
-        </nav>
-        <a href="configuracao.html" class="menu-config">Configuração</a>
-      </aside>
+      <aside id="sidebar" data-ativo="dashboard"></aside>
+
       <main class="content">
-        <div class="tittle-row">
-            <h1>Dashboard</h1>
+        <div class="saudacao">Olá, Samuel <span class="avatar">G.</span></div>
+
+        <div class="title-row">
+          <h1>Dashboard</h1>
+          <label class="mes-select">
+            <select id="mes"></select>
+            <svg class="icon" viewBox="0 0 24 24">
+              <path
+                d="M5 5h14a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1zM4 10h16M9 3v4M15 3v4"
+              />
+            </svg>
+          </label>
         </div>
+
         <section class="kpis">
-            <article class="card kpi">
-                <span class="kpi-label">Património Total</span>
-                <strong class="kpi-value" data-campo="patrimonio">—</strong>
-            </article>
-            <article class="card kpi">
-                <span class="kpi-label">Receitas</span>
-                <strong class="kpi-value" data-campo="receitas">—</strong>
-            </article>
-            <article class="card kpi">
-                <span class="kpi-label">Despesas</span>
-                <strong class="kpi-value" data-campo="despesas">—</strong>
-            </article>
-            <article class="card kpi">
-                <span class="kpi-label">Taxa de Poupança</span>
-                <strong class="kpi-value" data-campo="taxa_poupanca">—</strong>
-            </article>
+          <article class="card kpi">
+            <span class="kpi-label"
+              ><i class="dot" style="background: #16a37f"></i>Património
+              Total</span
+            >
+            <strong class="kpi-value" id="patrimonio-valor">—</strong
+            ><span class="kpi-delta" id="patrimonio-var"></span>
+          </article>
+          <article class="card kpi">
+            <span class="kpi-label"
+              ><i class="dot" style="background: #16a37f"></i>Receitas</span
+            >
+            <strong class="kpi-value" id="receitas-valor">—</strong
+            ><span class="kpi-delta" id="receitas-var"></span>
+          </article>
+          <article class="card kpi">
+            <span class="kpi-label"
+              ><i class="dot" style="background: #f0705a"></i>Despesas</span
+            >
+            <strong class="kpi-value" id="despesas-valor">—</strong
+            ><span class="kpi-delta" id="despesas-var"></span>
+          </article>
+          <article class="card kpi">
+            <span class="kpi-label"
+              ><i class="dot" style="background: #2bb3d6"></i>Taxa de
+              Poupança</span
+            >
+            <strong class="kpi-value" id="taxa-valor">—</strong
+            ><span class="kpi-delta" id="taxa-var"></span>
+          </article>
         </section>
+
         <section class="charts">
-            <article class="card box">
-                <h2>Evolução do Património</h2>
-                <div class="placeholder" id="grafico-evolucao">Sem dados</div>
-            </article>
-            <article class="card box">
-                <h2>Distribuição do Património</h2>
-                <div class="donut-wrap">
-                    <div class="donut">
-                        <span data-campo="centro">—</span>
-                    </div>
-                    <ul class="legend" id="legenda"></ul>
-                </div>
-            </article>
+          <article class="card box">
+            <h2>Evolução do Património</h2>
+            <div class="grafico" id="grafico-evolucao"></div>
+          </article>
+          <article class="card box">
+            <h2>Distribuição do Património</h2>
+            <div class="distribuicao">
+              <div class="donut" id="donut"></div>
+              <ul class="legend" id="legenda"></ul>
+            </div>
+          </article>
         </section>
+
         <section class="banner">
-            <p data-campo="fundo_texto">—</p>
-            <a href="fundo-emergencia.html" class="btn-primary">Ver detalhes</a>
+          <span class="banner-icon">€</span>
+          <p id="fundo-texto">—</p>
+          <a href="fundo-emergencia.html" class="btn-primary">Ver detalhes</a>
         </section>
       </main>
     </div>
+    <script src="js/sidebar.js"></script>
     <script src="js/dashboard.js"></script>
   </body>
 </html>
