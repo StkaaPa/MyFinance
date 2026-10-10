@@ -1,0 +1,10 @@
+.grande {
+  display: block;
+  font-size: 24px;
+  margin: 4px 0 10px;
+}
+.donut-wrap {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
