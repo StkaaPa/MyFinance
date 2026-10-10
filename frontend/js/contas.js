@@ -49,7 +49,7 @@ function desenhar(contas) {
     const td = criar(
       "td",
       "vazio",
-      "Ainda não tens contas. Carrega em «+ Adicionar conta».",
+      "Ainda não tens contas. Carrega em «Adicionar conta».",
     );
     td.colSpan = 5;
     tr.append(td);

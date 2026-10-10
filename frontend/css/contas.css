@@ -1,4 +1,10 @@
 /* Página Contas */
+.tittle-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 .tabela .muted-td {
   color: var(--muted);
   font-weight: 400;
