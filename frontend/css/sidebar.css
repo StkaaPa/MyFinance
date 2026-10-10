@@ -1,0 +1,35 @@
+/* Sidebar com ícones (sobrepõe-se ao style.css) */
+.menu a,
+.menu-config {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.menu-config {
+  margin-top: auto;
+}
+.menu-config.active {
+  background: var(--blue-active);
+  color: #fff;
+  font-weight: 600;
+}
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.brand .icon {
+  stroke: #2bd0a0;
+  width: 20px;
+  height: 20px;
+}
+.sidebar .icon {
+  width: 16px;
+  height: 16px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  flex: none;
+}
