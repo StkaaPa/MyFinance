@@ -1,40 +1,22 @@
 from fastapi import FastAPI
-from typing import Literal
-from pydantic import BaseModel
 from fastapi.staticfiles import StaticFiles
 
-from backend.database import ligar_database
+from backend.routers import (configuracao, contas, categorias, dashboard, despesas, despesas_anuais,
+                             fechos, fundo_emergencia, investimentos, objetivos, receitas, relatorios)
 
-app = FastAPI()
+app = FastAPI(title="MyFinance")
+
 
 @app.get("/api/saude")
 def saude():
-    return {"estado": "ok!"}
+    return {"estado": "ok"}
 
-@app.get("/api/contas")
-def listar_contas():
-    with ligar_database() as conn:
-        linhas = conn.execute(
-            "SELECT id, nome, instituicao, tipo, ativo FROM contas ORDER BY id"
-        ).fetchall()
-    return linhas
 
-class NovaConta(BaseModel):
-    nome: str
-    instituicao: str
-    tipo: Literal["Conta Ordem", "Poupança", "Investimento", "Reforma"]
+for modulo in (contas, categorias, fechos, dashboard, despesas, receitas, investimentos,
+               fundo_emergencia, objetivos, despesas_anuais, relatorios, configuracao):
+    app.include_router(modulo.router)
 
-@app.post("/api/contas", status_code=201)
-def criar_conta(conta: NovaConta):
-    with ligar_database() as conn:
-        nova = conn.execute(
-            "INSERT INTO contas (nome, instituicao, tipo) VALUES (%s, %s, %s)"
-            "RETURNING id, nome, instituicao, tipo, ativo",
-            (conta.nome, conta.instituicao, conta.tipo),
-        ).fetchone()
-    return nova
-
-#isto faz a API servir as páginas
+# Tem de ficar no FIM: serve o frontend em tudo o que não for /api
 app.mount("/", StaticFiles(directory="frontend", html=True), name="frontend")
 
 #python -m uvicorn backend.main:app --reload
