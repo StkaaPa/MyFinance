@@ -115,7 +115,11 @@
           </section>
           <section><h3>Receitas <span id="sub-rec"></span></h3><div class="fecho-grid" id="fecho-receitas"></div></section>
           <section><h3>Despesas <span id="sub-desp"></span></h3><div class="fecho-grid" id="fecho-despesas"></div></section>
-          <section><h3>Contas e investimentos <span id="sub-pat"></span></h3><div class="fecho-grid" id="fecho-contas"></div></section>
+          <section><h3>Contas <span id="sub-pat"></span></h3><div class="fecho-grid" id="fecho-contas"></div></section>
+          <section id="sec-ativos" hidden>
+            <h3>Investimentos (por ativo) <span>Valor atual e dinheiro depositado no mês</span></h3>
+            <div id="fecho-ativos"></div>
+          </section>
         </div>
         <footer class="fecho-rodape">
           <div class="fecho-totais">
@@ -200,7 +204,8 @@
     contas.replaceChildren();
     if (!dados.contas.length)
       contas.append(criar("p", "fecho-vazio", "Ainda não tens contas ativas."));
-    for (const c of dados.contas)
+    // Contas com ativos não levam saldo próprio: o saldo é a soma dos ativos (calculada no servidor)
+    for (const c of dados.contas.filter((x) => !x.tem_ativos))
       contas.append(
         campo(
           c,
@@ -210,6 +215,63 @@
           "Obrigatório (0 se estiver vazia)",
         ),
       );
+    if (!contas.children.length && dados.contas.length)
+      contas.append(
+        criar(
+          "p",
+          "fecho-vazio",
+          "Todas as tuas contas têm ativos: indica os valores abaixo.",
+        ),
+      );
+
+    const secAtivos = form.querySelector("#sec-ativos");
+    const alvo = form.querySelector("#fecho-ativos");
+    alvo.replaceChildren();
+    const ativos = dados.ativos || [];
+    secAtivos.hidden = !ativos.length;
+    let contaAtual = null;
+    for (const a of ativos) {
+      if (a.conta_id !== contaAtual) {
+        contaAtual = a.conta_id;
+        alvo.append(criar("h4", "ativos-conta", a.conta));
+      }
+      alvo.append(linhaAtivo(a));
+    }
+  }
+
+  // Uma linha por ativo: nome | valor atual (obrigatório) | depositado (opcional; negativo = levantaste/vendeste)
+  function linhaAtivo(a) {
+    const linha = criar("div", "ativo-linha");
+    const nome = criar("span", "nome", a.nome);
+    nome.append(
+      criar(
+        "small",
+        "",
+        a.valor_anterior == null
+          ? "Novo: ainda sem valor registado"
+          : "Mês anterior: " + eur(a.valor_anterior),
+      ),
+    );
+    const mk = (tipo, ph, rotulo) => {
+      const l = criar("label", "mini");
+      l.append(criar("span", "", rotulo));
+      const i = document.createElement("input");
+      i.type = "text";
+      i.inputMode = "decimal";
+      i.autocomplete = "off";
+      i.placeholder = ph;
+      i.dataset.tipo = tipo;
+      i.dataset.id = a.id;
+      i.dataset.nome = a.nome;
+      l.append(i);
+      return l;
+    };
+    linha.append(
+      nome,
+      mk("ativo", "0,00", "Valor atual (€)"),
+      mk("deposito", "0,00", "Depositado (€)"),
+    );
+    return linha;
   }
 
   // "190,40" ou "190.4" -> 190.4 ; vazio -> null ; inválido -> NaN (até 2 casas decimais, sem milhares)
@@ -233,7 +295,7 @@
   function atualizar() {
     const rec = somar("receita"),
       desp = somar("despesa"),
-      pat = somar("conta");
+      pat = somar("conta") + somar("ativo");
     form.querySelector("#t-rec").textContent = eur(rec);
     form.querySelector("#t-desp").textContent = eur(desp);
     form.querySelector("#t-pat").textContent = eur(pat);
@@ -276,10 +338,39 @@
       );
 
     const saldos = [],
-      movimentos = [];
+      movimentos = [],
+      ativos = new Map();
     for (const i of form.querySelectorAll("input[data-tipo]")) {
       const v = valorDe(i);
-      const conta = i.dataset.tipo === "conta";
+      const tipo = i.dataset.tipo;
+      if (tipo === "ativo" || tipo === "deposito") {
+        if (!Number.isFinite(v) && v !== null)
+          return mostrarErro(
+            `Valor inválido em «${i.dataset.nome}». Usa o formato 1234,56 (até 2 casas decimais).`,
+            i,
+          );
+        const reg = ativos.get(i.dataset.id) || {
+          ativo_id: Number(i.dataset.id),
+          valor: null,
+          depositado: "0.00",
+        };
+        if (tipo === "ativo") {
+          if (v === null)
+            return mostrarErro(
+              `Indica o valor de «${i.dataset.nome}» (0 se já não tens).`,
+              i,
+            );
+          if (v < 0)
+            return mostrarErro(
+              `O valor de «${i.dataset.nome}» não pode ser negativo.`,
+              i,
+            );
+          reg.valor = v.toFixed(2);
+        } else if (v !== null) reg.depositado = v.toFixed(2);
+        ativos.set(i.dataset.id, reg);
+        continue;
+      }
+      const conta = tipo === "conta";
       if (v === null) {
         if (conta)
           return mostrarErro(
@@ -301,7 +392,7 @@
       };
       (conta ? saldos : movimentos).push(item);
     }
-    if (!saldos.length)
+    if (!saldos.length && !ativos.size)
       return mostrarErro(
         "Não há contas ativas. Adiciona uma conta antes de fechar o mês.",
       );
@@ -315,6 +406,7 @@
         data_fim: fim,
         saldos,
         movimentos,
+        ativos: [...ativos.values()],
       });
     } catch (e) {
       botao.disabled = false;
