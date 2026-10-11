@@ -93,7 +93,7 @@
 .legenda {
   list-style: none;
   flex: 1;
-  max-width: 560px;
+  max-width: 360px;
   max-height: 150px;
   overflow: auto;
   display: flex;

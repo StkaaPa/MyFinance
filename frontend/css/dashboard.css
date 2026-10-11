@@ -130,7 +130,7 @@
   height: 100%;
 }
 .grafico text {
-  font-size: 9px;
+  font-size: 7px;
   fill: var(--muted);
 }
 
@@ -142,8 +142,8 @@
   gap: 16px;
 }
 .donut {
-  width: 150px;
-  height: 150px;
+  width: 300px;
+  height: 300px;
   border-radius: 50%;
   background: #e4e9f2;
   position: relative;
@@ -167,11 +167,11 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 12px;
+  font-size: 18px;
 }
 .legend i {
-  width: 8px;
-  height: 8px;
+  width: 12px;
+  height: 12px;
   border-radius: 50%;
 }
 .legend b {
