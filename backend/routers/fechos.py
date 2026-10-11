@@ -4,6 +4,7 @@ import psycopg
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel, Field
 from backend.database import ligar_database
+from backend.utils import tem_ativos
 
 router = APIRouter(prefix="/api/fechos", tags=["fecho mensal"])
 
@@ -18,12 +19,19 @@ class MovimentoIn(BaseModel):
     valor: Decimal = Field(ge=0, max_digits=12, decimal_places=2)
 
 
+class AtivoIn(BaseModel):
+    ativo_id: int
+    valor: Decimal = Field(ge=0, max_digits=12, decimal_places=2)
+    depositado: Decimal = Field(default=Decimal("0"), max_digits=12, decimal_places=2)  # negativo = levantaste
+
+
 class NovoFecho(BaseModel):
     mes_referencia: str = Field(pattern=r"^\d{4}-(0[1-9]|1[0-2])$")
     data_inicio: date
     data_fim: date
     saldos: list[SaldoIn]
     movimentos: list[MovimentoIn]
+    ativos: list[AtivoIn] = []
 
 
 @router.get("")
@@ -53,11 +61,23 @@ def dados_formulario():
             WHERE c.ativo AND NOT EXISTS (SELECT 1 FROM categorias f WHERE f.categoria_pai_id = c.id)
             ORDER BY c.tipo, COALESCE(p.nome, c.nome), c.nome""", (ultimo_id,)).fetchall()
         dia = conn.execute("SELECT valor FROM configuracoes WHERE chave = 'dia_inicio'").fetchone()
+        # ativos (ETF, ações, cripto, PPR...) das contas de investimento
+        ativos = []
+        if tem_ativos(conn):
+            ativos = conn.execute("""
+                SELECT a.id, a.nome, a.classe, a.conta_id, c.nome AS conta, v.valor AS valor_anterior
+                FROM ativos a JOIN contas c ON c.id = a.conta_id
+                LEFT JOIN valores_ativo v ON v.ativo_id = a.id AND v.fecho_id = %s
+                WHERE a.ativo AND c.ativo ORDER BY c.id, a.nome""", (ultimo_id,)).fetchall()
+    com_ativos = {a["conta_id"] for a in ativos}
     for c in contas:
         c["saldo_anterior"] = float(c["saldo_anterior"]) if c["saldo_anterior"] is not None else None
+        c["tem_ativos"] = c["id"] in com_ativos   # o saldo destas contas é a soma dos ativos
     for c in cats:
         c["valor_anterior"] = float(c["valor_anterior"]) if c["valor_anterior"] is not None else None
-    return {"contas": contas, "categorias": cats,
+    for a in ativos:
+        a["valor_anterior"] = float(a["valor_anterior"]) if a["valor_anterior"] is not None else None
+    return {"contas": contas, "categorias": cats, "ativos": ativos,
             "data_inicio_sugerida": (ultimo["data_fim"] + timedelta(days=1)) if ultimo else None,
             "dia_inicio_configurado": int(dia["valor"]) if dia else 27}
 
@@ -85,6 +105,28 @@ def fechar_mes(novo: NovoFecho):
                           (ids_m,)).fetchall()
         if len(ok) != len(ids_m):
             raise HTTPException(422, "Só se guardam valores em categorias ativas sem subcategorias")
+        # Ativos: o saldo de uma conta com ativos é a SOMA dos valores dos seus ativos
+        ids_a = [a.ativo_id for a in novo.ativos]
+        if len(set(ids_a)) != len(ids_a):
+            raise HTTPException(422, "Há ativos repetidos")
+        saldos_ativos = {}   # conta_id -> soma dos ativos
+        ativo_conta = {}
+        if tem_ativos(conn):
+            ativos_ativos = conn.execute("""SELECT a.id, a.nome, a.conta_id FROM ativos a
+                                            JOIN contas c ON c.id = a.conta_id WHERE a.ativo AND c.ativo""").fetchall()
+            ativo_conta = {r["id"]: r["conta_id"] for r in ativos_ativos}
+            if any(i not in ativo_conta for i in ids_a):
+                raise HTTPException(422, "Há ativos inexistentes ou inativos")
+            em_falta = [r["nome"] for r in ativos_ativos if r["id"] not in ids_a]
+            if em_falta:
+                raise HTTPException(422, "Falta o valor de: " + ", ".join(em_falta) + " (0 se já não tens).")
+            if any(s.conta_id in set(ativo_conta.values()) for s in novo.saldos):
+                raise HTTPException(422, "Uma conta com ativos não leva saldo próprio: o saldo é a soma dos ativos.")
+            for a in novo.ativos:
+                c = ativo_conta[a.ativo_id]
+                saldos_ativos[c] = saldos_ativos.get(c, Decimal("0")) + a.valor
+        elif ids_a:
+            raise HTTPException(503, "Ainda não criaste as tabelas dos ativos. Corre o ficheiro database/ativos.sql no psql.")
         if conn.execute("SELECT 1 FROM fechos_mensais WHERE mes_referencia = %s::date",
                         (novo.mes_referencia + "-01",)).fetchone():
             raise HTTPException(409, "Esse mês já está fechado")
@@ -99,7 +141,11 @@ def fechar_mes(novo: NovoFecho):
             raise HTTPException(409, "Esse mês já está fechado")
         with conn.cursor() as cur:
             cur.executemany("INSERT INTO saldos_conta (conta_id, fecho_id, saldo) VALUES (%s, %s, %s)",
-                            [(s.conta_id, fecho["id"], s.saldo) for s in novo.saldos])
+                            [(s.conta_id, fecho["id"], s.saldo) for s in novo.saldos]
+                            + [(c, fecho["id"], total) for c, total in saldos_ativos.items()])
+            if novo.ativos:
+                cur.executemany("INSERT INTO valores_ativo (ativo_id, fecho_id, valor, depositado) VALUES (%s, %s, %s, %s)",
+                                [(a.ativo_id, fecho["id"], a.valor, a.depositado) for a in novo.ativos])
             cur.executemany("INSERT INTO movimentos_categoria (categoria_id, fecho_id, valor) VALUES (%s, %s, %s)",
                             [(m.categoria_id, fecho["id"], m.valor) for m in novo.movimentos])
     return {"id": fecho["id"], "mes": novo.mes_referencia}
