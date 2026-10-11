@@ -116,3 +116,23 @@ CREATE TABLE despesas_anuais (
 
 CREATE TABLE configuracoes (chave TEXT PRIMARY KEY, valor TEXT NOT NULL);
 INSERT INTO configuracoes VALUES ('dia_inicio','27'), ('moeda','EUR'), ('idioma','pt');
+
+-- MyFinance: ativos dentro das contas de investimento
+-- Um ativo é um investimento concreto (ETF World, Bitcoin, PPR...) que vive dentro de uma conta.
+CREATE TABLE ativos (
+  id       INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  nome     TEXT NOT NULL,
+  classe   TEXT NOT NULL CHECK (classe IN ('etf','acao','cripto','ppr','outro')),
+  conta_id INTEGER NOT NULL REFERENCES contas(id),
+  ativo    BOOLEAN NOT NULL DEFAULT TRUE
+);
+
+-- O valor de cada ativo em cada mês fechado (e quanto entrou do teu bolso nesse mês).
+CREATE TABLE valores_ativo (
+  id         INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  ativo_id   INTEGER NOT NULL REFERENCES ativos(id),
+  fecho_id   INTEGER NOT NULL REFERENCES fechos_mensais(id) ON DELETE CASCADE,
+  valor      NUMERIC(12,2) NOT NULL CHECK (valor >= 0),
+  depositado NUMERIC(12,2) NOT NULL DEFAULT 0,   -- negativo = levantaste/vendeste
+  UNIQUE (ativo_id, fecho_id)
+);
