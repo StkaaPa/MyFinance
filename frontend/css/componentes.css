@@ -239,3 +239,9 @@
   font-size: 12px;
   min-height: 16px;
 }
+
+.aviso.info {
+  background: #e6f5ef;
+  color: #0b6b4d;
+  border-color: #c4e6d8;
+}

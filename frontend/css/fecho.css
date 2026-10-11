@@ -248,6 +248,53 @@
   margin-top: 6px;
 }
 
+/* Investimentos por ativo dentro do pop-up */
+.ativos-conta {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--muted);
+  margin: 10px 0 6px;
+}
+.ativos-conta:first-child {
+  margin-top: 0;
+}
+.ativo-linha {
+  display: grid;
+  grid-template-columns: 1fr 150px 150px;
+  gap: 12px;
+  align-items: start;
+  padding: 6px 0;
+  border-bottom: 1px solid var(--border);
+}
+.ativo-linha:last-child {
+  border-bottom: 0;
+}
+.ativo-linha > .nome {
+  font-weight: 600;
+  padding-top: 22px;
+}
+.ativo-linha > .nome small {
+  display: block;
+  font-weight: 400;
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 2px;
+}
+.ativo-linha .mini {
+  margin: 0;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--muted);
+  display: block;
+}
+.ativo-linha .mini input {
+  margin-top: 3px;
+}
+.ativo-linha input.invalido {
+  outline: 2px solid #e5594a;
+  border-color: transparent;
+}
+
 @media (max-height: 760px) {
   .passos {
     margin-top: 14px;

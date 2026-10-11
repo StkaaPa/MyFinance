@@ -1,10 +1,202 @@
-.kpis {
+/* Página Investimentos (cartões de resumo + painel igual ao de Despesas/Receitas) */
+.content {
+  gap: 12px;
+}
+
+.cartoes {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 14px;
 }
-.donut-wrap {
+.cartao {
+  padding: 14px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.grande {
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.delta {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11.5px;
+  font-weight: 600;
+  min-height: 16px;
+}
+.delta small {
+  font-weight: 400;
+  color: var(--muted);
+  font-size: 11.5px;
+}
+.delta .seta {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-size: 8px;
+  color: #fff;
+  background: var(--muted);
+}
+.delta.bom {
+  color: var(--green);
+}
+.delta.bom .seta {
+  background: var(--green);
+}
+.delta.mau {
+  color: #e5594a;
+}
+.delta.mau .seta {
+  background: #e5594a;
+}
+
+.painel {
+  padding: 16px 20px;
+  display: flex;
+  flex-direction: column;
+  flex: 0 1 auto;
+  min-height: 0;
+}
+
+.distribuicao {
   display: flex;
   align-items: center;
-  gap: 32px;
+  gap: 36px;
+}
+.donut {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  background: #e4e9f2;
+  position: relative;
+  flex: none;
+  display: grid;
+  place-items: center;
+}
+.donut::before {
+  content: "";
+  position: absolute;
+  inset: 28px;
+  background: var(--card);
+  border-radius: 50%;
+}
+.donut span {
+  position: relative;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.legenda {
+  list-style: none;
+  flex: 1;
+  max-width: 640px;
+  max-height: 150px;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+}
+.legenda li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12.5px;
+}
+.legenda i {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex: none;
+  display: inline-block;
+}
+.legenda .nome {
+  flex: 1;
+}
+.legenda .pct {
+  width: 44px;
+  text-align: right;
+  color: var(--muted);
+}
+.legenda .val {
+  width: 92px;
+  text-align: right;
+  font-weight: 600;
+}
+.legenda .rend {
+  width: 150px;
+  text-align: right;
+  font-size: 11.5px;
+  color: var(--muted);
+}
+.legenda .rend.bom {
+  color: var(--green);
+}
+.legenda .rend.mau {
+  color: #e5594a;
+}
+.legenda .vazio {
+  color: var(--muted);
+}
+
+.painel h2 {
+  font-size: 13.5px;
+  font-weight: 700;
+  margin: 14px 0 8px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
+}
+.scroll {
+  flex: 0 1 auto;
+  min-height: 0;
+  overflow: auto;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+.tabela.cinza thead th {
+  background: #f3f6fb;
+  position: sticky;
+  top: 0;
+}
+.tabela.cinza td,
+.tabela.cinza th {
+  padding: 10px 12px;
+}
+.tabela.cinza td:first-child {
+  font-weight: 400;
+}
+.tabela .valor {
+  font-weight: 600;
+}
+
+@media (max-height: 760px) {
+  .donut {
+    width: 110px;
+    height: 110px;
+  }
+  .donut::before {
+    inset: 22px;
+  }
+  .legenda {
+    gap: 7px;
+    max-height: 110px;
+  }
+  .grande {
+    font-size: 21px;
+  }
+  .cartao {
+    padding: 10px 20px;
+  }
+  .painel h2 {
+    margin-top: 10px;
+    padding-top: 10px;
+  }
+  .tabela.cinza td,
+  .tabela.cinza th {
+    padding: 8px 12px;
+  }
 }
