@@ -306,7 +306,7 @@ $("btn-adicionar").addEventListener("click", async () => {
   conta.replaceChildren();
   try {
     const contas = (await api("/api/contas")).filter(
-      (c) => c.ativo && (c.tipo === "investimento" || c.tipo === "reforma"),
+      (c) => c.ativo && (c.tipo === "Investimento" || c.tipo === "Reforma"),
     );
     for (const c of contas)
       conta.append(new Option(c.nome + " (" + c.instituicao + ")", c.id));
