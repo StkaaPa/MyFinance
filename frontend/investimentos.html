@@ -3,73 +3,115 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>MyFinance–Investimentos</title>
+    <link rel="icon" href="data:," />
+    <title>MyFinance – Investimentos</title>
     <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/sidebar.css" />
+    <link rel="stylesheet" href="css/componentes.css" />
     <link rel="stylesheet" href="css/investimentos.css" />
   </head>
   <body>
     <div class="app">
-      <aside class="sidebar">
-        <div class="brand">MyFinance</div>
-        <nav class="menu">
-          <a href="dashboard.html">Dashboard</a>
-          <a href="contas.html">Contas</a>
-          <a href="despesas.html">Despesas</a>
-          <a href="receitas.html">Receitas</a>
-          <a href="investimentos.html" class="active">Investimentos</a>
-          <a href="fundo-emergencia.html">Fundo Emergência</a>
-          <a href="objetivos.html">Objetivos</a>
-          <a href="despesas-anuais.html">Despesas Anuais</a>
-          <a href="relatorios.html">Relatórios</a>
-        </nav>
-        <a href="configuracao.html" class="menu-config">Configuração</a>
-      </aside>
+      <aside id="sidebar" data-ativo="investimentos"></aside>
+
       <main class="content">
         <div class="title-row">
           <h1>Investimentos</h1>
-          <button class="btn-add">Adicionar investimento</button>
-        </div>
-        <div class="tabs">
-          <button class="tab active">Todos</button>
-          <button class="tab">ETFs</button>
-          <button class="tab">Ações</button>
-          <button class="tab">Cripto</button>
-          <button class="tab">PPR</button>
-        </div>
-        <section class="kpis">
-          <article class="card kpi">
-            <span class="kpi-label">Total investido</span>
-            <strong class="kpi-value" data-campo="total">—</strong>
-          </article>
-          <article class="card kpi">
-            <span class="kpi-label">Rendimento (YTD)</span>
-            <strong class="kpi-value" data-campo="rendimento">—</strong>
-          </article>
-        </section>
-        <article class="card box">
-          <div class="donut-wrap">
-            <div class="donut">
-              <span data-campo="centro">—</span>
-            </div>
-            <ul class="legend" id="legenda"></ul>
+          <div class="acoes">
+            <label class="mes-select">
+              <select id="mes" aria-label="Mês"></select>
+              <svg class="icon" viewBox="0 0 24 24">
+                <path
+                  d="M5 5h14a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1zM4 10h16M9 3v4M15 3v4"
+                />
+              </svg>
+            </label>
+            <button class="btn-add" id="btn-adicionar">
+              <span class="mais">+</span> Adicionar investimento
+            </button>
           </div>
-        </article>
-        <h2>Últimos movimentos</h2>
-        <section class="card tabela-card">
-          <table class="tabela">
-            <thead>
-              <tr>
-                <th>Data</th>
-                <th>Ativo</th>
-                <th>Tipo</th>
-                <th>Valor</th>
-              </tr>
-            </thead>
-            <tbody id="lista"></tbody>
-          </table>
+        </div>
+
+        <p class="aviso" id="aviso" hidden></p>
+
+        <div class="tabs" id="tabs"></div>
+
+        <div class="cartoes">
+          <section class="card cartao">
+            <span class="muted">Total investido</span>
+            <strong class="grande" id="total">€ 0,00</strong>
+            <span class="delta" id="variacao"></span>
+          </section>
+          <section class="card cartao">
+            <span class="muted">Rendimento (YTD)</span>
+            <strong class="grande" id="rend-pct">—</strong>
+            <span class="delta" id="rend-eur"></span>
+          </section>
+        </div>
+
+        <section class="card painel">
+          <div class="distribuicao">
+            <div class="donut" id="donut"><span id="centro"></span></div>
+            <ul class="legenda" id="legenda"></ul>
+          </div>
+
+          <h2>Últimos movimentos</h2>
+          <div class="scroll">
+            <table class="tabela cinza">
+              <thead>
+                <tr>
+                  <th>Data</th>
+                  <th>Ativo</th>
+                  <th>Tipo</th>
+                  <th class="dir">Valor</th>
+                </tr>
+              </thead>
+              <tbody id="corpo"></tbody>
+            </table>
+          </div>
         </section>
       </main>
     </div>
+
+    <dialog id="modal-ativo" class="modal">
+      <form id="form-ativo">
+        <h2>Adicionar investimento</h2>
+        <label
+          >Nome
+          <input
+            type="text"
+            name="nome"
+            maxlength="60"
+            autocomplete="off"
+            placeholder="Ex.: ETF World, Apple, Bitcoin"
+            required
+          />
+        </label>
+        <label
+          >Classe
+          <select name="classe" required></select>
+        </label>
+        <label
+          >Conta
+          <select name="conta" required></select>
+        </label>
+        <p class="nota" id="nota-ativo">
+          O valor deste investimento é indicado no próximo «Fechar mês».
+        </p>
+        <p id="erro-ativo" class="erro"></p>
+        <div class="modal-botoes">
+          <button type="button" id="btn-cancelar" class="btn-cancelar">
+            Cancelar
+          </button>
+          <button type="submit" class="btn-add" id="btn-guardar">
+            Guardar
+          </button>
+        </div>
+      </form>
+    </dialog>
+
+    <script src="js/sidebar.js"></script>
+    <script src="js/util.js"></script>
     <script src="js/investimentos.js"></script>
   </body>
 </html>
