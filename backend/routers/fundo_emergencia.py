@@ -10,7 +10,7 @@ from math import ceil
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel, Field
 
-from backend.database import ligar
+from backend.database import ligar_database
 from backend.utils import total_categorias
 
 router = APIRouter(prefix="/api/fundo-emergencia", tags=["fundo de emergência"])
@@ -30,7 +30,7 @@ def tem_coluna_conta(conn):
 
 @router.get("")
 def fundo():
-    with ligar() as conn:
+    with ligar_database() as conn:
         o = conn.execute("SELECT * FROM objetivos WHERE fundo_emergencia").fetchone()
         if not o:
             return {"existe": False}
@@ -71,7 +71,7 @@ def fundo():
 @router.put("")
 def guardar(f: FundoIn):
     """Cria o fundo de emergência ou atualiza o que já existe."""
-    with ligar() as conn:
+    with ligar_database() as conn:
         com_coluna = tem_coluna_conta(conn)
         if f.conta_id is not None:
             if not com_coluna:
