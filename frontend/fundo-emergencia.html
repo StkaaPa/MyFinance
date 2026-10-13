@@ -3,50 +3,122 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>MyFinance–Fundo de Emergência</title>
+    <link rel="icon" href="data:," />
+    <title>MyFinance – Fundo de Emergência</title>
     <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/sidebar.css" />
+    <link rel="stylesheet" href="css/componentes.css" />
     <link rel="stylesheet" href="css/fundo-emergencia.css" />
   </head>
   <body>
     <div class="app">
-      <aside class="sidebar">
-        <div class="brand">MyFinance-FundoEmergencia</div>
-        <nav class="menu">
-          <a href="dashboard.html">Dashboard</a>
-          <a href="contas.html">Contas</a><a href="despesas.html">Despesas</a>
-          <a href="receitas.html">Receitas</a>
-          <a href="investimentos.html">Investimentos</a>
-          <a href="fundo-emergencia.html" class="active">Fundo Emergência</a>
-          <a href="objetivos.html">Objetivos</a>
-          <a href="despesas-anuais.html">Despesas Anuais</a>
-          <a href="relatorios.html">Relatórios</a>
-        </nav>
-        <a href="configuracao.html" class="menu-config">Configuração</a>
-      </aside>
+      <aside id="sidebar" data-ativo="fundo-emergencia"></aside>
+
       <main class="content">
-        <div class="title-row"><h1>Fundo de Emergência</h1></div>
-        <section class="card box topo">
-          <div class="donut">
-            <span data-campo="percentagem">—</span>
+        <div class="title-row">
+          <h1>Fundo de Emergência</h1>
+          <div class="acoes">
+            <button class="btn-cancelar" id="btn-editar" type="button">
+              Configurar fundo
+            </button>
           </div>
-          <dl class="info">
-            <dt>Objetivo</dt>
-            <dd data-campo="objetivo">—</dd>
-            <dt>Contribuição mensal</dt>
-            <dd data-campo="contribuicao">—</dd>
-            <dt>Tempo estimado</dt>
-            <dd data-campo="tempo">—</dd>
+        </div>
+
+        <p class="aviso" id="aviso" hidden></p>
+
+        <section class="card topo" id="topo">
+          <div class="anel-bloco">
+            <div class="anel" id="anel"><span id="anel-pct">—</span></div>
+            <strong class="anel-valores" id="anel-valores">€ 0 / € 0</strong>
+          </div>
+          <dl class="detalhes">
+            <div>
+              <dt>Objetivo</dt>
+              <dd id="d-objetivo">—</dd>
+            </div>
+            <div>
+              <dt>Contribuição mensal</dt>
+              <dd id="d-contrib">—</dd>
+            </div>
+            <div>
+              <dt>Tempo estimado</dt>
+              <dd id="d-tempo">—</dd>
+            </div>
           </dl>
         </section>
-        <section class="banner">
-          <p data-campo="dica">—</p>
-        </section>
-        <article class="card box">
+
+        <div class="banner">
+          <span class="escudo"
+            ><svg viewBox="0 0 24 24">
+              <path
+                d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6zM9 12l2 2 4-4"
+              /></svg
+          ></span>
+          <p id="dica">
+            Mantém o teu fundo de emergência entre 3 e 6 meses de despesas.
+          </p>
+        </div>
+
+        <section class="card evolucao">
           <h2>Evolução</h2>
-          <div class="placeholder" id="grafico-evolucao">Sem dados</div>
-        </article>
+          <div class="grafico" id="grafico"></div>
+        </section>
       </main>
     </div>
+
+    <dialog id="modal-fundo" class="modal">
+      <form id="form-fundo">
+        <h2>Fundo de emergência</h2>
+        <label
+          >Objetivo (€)
+          <input
+            type="text"
+            name="alvo"
+            inputmode="decimal"
+            autocomplete="off"
+            placeholder="4000"
+            required
+          />
+        </label>
+        <label
+          >Contribuição mensal (€)
+          <input
+            type="text"
+            name="contrib"
+            inputmode="decimal"
+            autocomplete="off"
+            placeholder="0,00"
+          />
+        </label>
+        <label
+          >Conta onde está o fundo
+          <select name="conta"></select>
+        </label>
+        <label id="lbl-atual"
+          >Valor atual (€)
+          <input
+            type="text"
+            name="atual"
+            inputmode="decimal"
+            autocomplete="off"
+            placeholder="0,00"
+          />
+        </label>
+        <p class="nota" id="nota-fundo"></p>
+        <p id="erro-fundo" class="erro"></p>
+        <div class="modal-botoes">
+          <button type="button" id="btn-cancelar" class="btn-cancelar">
+            Cancelar
+          </button>
+          <button type="submit" class="btn-add" id="btn-guardar">
+            Guardar
+          </button>
+        </div>
+      </form>
+    </dialog>
+
+    <script src="js/sidebar.js"></script>
+    <script src="js/util.js"></script>
     <script src="js/fundo-emergencia.js"></script>
   </body>
 </html>
