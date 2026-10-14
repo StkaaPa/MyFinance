@@ -3,42 +3,118 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>MyFinance–Objetivos</title>
+    <link rel="icon" href="data:," />
+    <title>MyFinance – Objetivos</title>
     <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/sidebar.css" />
+    <link rel="stylesheet" href="css/componentes.css" />
     <link rel="stylesheet" href="css/objetivos.css" />
   </head>
   <body>
     <div class="app">
-      <aside class="sidebar">
-        <div class="brand">MyFinance</div>
-        <nav class="menu">
-          <a href="dashboard.html">Dashboard</a>
-          <a href="contas.html">Contas</a>
-          <a href="despesas.html">Despesas</a>
-          <a href="receitas.html">Receitas</a>
-          <a href="investimentos.html">Investimentos</a>
-          <a href="fundo-emergencia.html">Fundo Emergência</a>
-          <a href="objetivos.html" class="active">Objetivos</a>
-          <a href="despesas-anuais.html">Despesas Anuais</a>
-          <a href="relatorios.html">Relatórios</a>
-        </nav>
-        <a href="configuracao.html" class="menu-config">Configuração</a>
-      </aside>
+      <aside id="sidebar" data-ativo="objetivos"></aside>
+
       <main class="content">
         <div class="title-row">
           <h1>Objetivos</h1>
-          <button class="btn-add">Adicionar objetivo</button>
+          <div class="acoes">
+            <button class="btn-add" id="btn-adicionar" type="button">
+              <span class="mais">+</span> Adicionar objetivo
+            </button>
+          </div>
         </div>
-        <div class="tabs">
-          <button class="tab active">Todos</button>
-          <button class="tab">Em andamento</button>
-          <button class="tab">Concluídos</button>
-        </div>
-        <div id="lista-objetivos">
-          <p class="muted">Sem objetivos.</p>
-        </div>
+
+        <p class="aviso" id="aviso" hidden></p>
+
+        <div class="tabs" id="tabs"></div>
+
+        <div class="lista" id="lista"></div>
       </main>
     </div>
+
+    <dialog id="modal-objetivo" class="modal">
+      <form id="form-objetivo">
+        <h2 id="titulo-modal">Adicionar objetivo</h2>
+        <label
+          >Nome
+          <input
+            type="text"
+            name="nome"
+            maxlength="60"
+            autocomplete="off"
+            placeholder="Ex.: Entrada Casa"
+            required
+          />
+        </label>
+        <div class="duas">
+          <label
+            >Objetivo (€)
+            <input
+              type="text"
+              name="alvo"
+              inputmode="decimal"
+              autocomplete="off"
+              placeholder="20000"
+              required
+            />
+          </label>
+          <label
+            >Contribuição mensal (€)
+            <input
+              type="text"
+              name="contrib"
+              inputmode="decimal"
+              autocomplete="off"
+              placeholder="0,00"
+            />
+          </label>
+        </div>
+        <div class="duas">
+          <label
+            >Ícone
+            <select name="icone"></select>
+          </label>
+          <label
+            >Conta ligada
+            <select name="conta"></select>
+          </label>
+        </div>
+        <label id="lbl-atual"
+          >Valor atual (€)
+          <input
+            type="text"
+            name="atual"
+            inputmode="decimal"
+            autocomplete="off"
+            placeholder="0,00"
+          />
+        </label>
+        <label class="check" id="lbl-concluido"
+          ><input type="checkbox" name="concluido" /> Marcar como
+          concluído</label
+        >
+        <p class="nota" id="nota-objetivo">
+          Se ligares uma conta, o valor do objetivo é o saldo dela em cada fecho
+          de mês.
+        </p>
+        <p id="erro-objetivo" class="erro"></p>
+        <div class="modal-botoes">
+          <button type="button" id="btn-apagar" class="btn-apagar" hidden>
+            Apagar
+          </button>
+          <span class="espaco"></span>
+          <button type="button" id="btn-cancelar" class="btn-cancelar">
+            Cancelar
+          </button>
+          <button type="submit" class="btn-add" id="btn-guardar">
+            Guardar
+          </button>
+        </div>
+      </form>
+    </dialog>
+
+    <script src="js/sidebar.js"></script>
+    <script src="js/util.js"></script>
     <script src="js/objetivos.js"></script>
   </body>
 </html>
