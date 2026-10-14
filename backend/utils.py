@@ -130,3 +130,19 @@ def tem_ativos(conn):
     """True se as tabelas dos ativos já foram criadas (database/ativos.sql)."""
     return conn.execute("SELECT to_regclass('public.ativos') IS NOT NULL "
                         "AND to_regclass('public.valores_ativo') IS NOT NULL AS ok").fetchone()["ok"]
+
+
+def colunas_objetivos(conn):
+    """Colunas que a tabela objetivos tem (conta_id e icone só existem depois de correr os scripts SQL)."""
+    return {r["column_name"] for r in conn.execute(
+        "SELECT column_name FROM information_schema.columns WHERE table_schema = 'public' AND table_name = 'objetivos'").fetchall()}
+
+
+def valor_atual_objetivo(conn, o, fecho_id):
+    """Quanto já tens num objetivo: o saldo da conta ligada no fecho; sem conta, o valor escrito à mão."""
+    if o.get("conta_id"):
+        if not fecho_id:
+            return 0.0
+        r = conn.execute("SELECT saldo FROM saldos_conta WHERE conta_id = %s AND fecho_id = %s", (o["conta_id"], fecho_id)).fetchone()
+        return float(r["saldo"]) if r else 0.0
+    return float(o["valor_atual"])
