@@ -109,6 +109,8 @@ CREATE UNIQUE INDEX um_fundo_emergencia ON objetivos (fundo_emergencia) WHERE fu
 -- Liga o fundo de emergência a uma conta (ex.: uma conta poupança).
 -- O valor do fundo em cada mês passa a ser o saldo dessa conta no fecho: não há nada de novo para preencher.
 ALTER TABLE objetivos ADD COLUMN conta_id INTEGER REFERENCES contas(id);
+ALTER TABLE objetivos ADD COLUMN IF NOT EXISTS icone TEXT NOT NULL DEFAULT 'alvo'
+    CHECK (icone IN ('alvo', 'casa', 'carro', 'viagem', 'estudos', 'familia'));
 
 CREATE TABLE despesas_anuais (
   id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
