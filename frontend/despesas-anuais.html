@@ -3,50 +3,110 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>MyFinance–Despesas Anuais</title>
+    <link rel="icon" href="data:," />
+    <title>MyFinance – Despesas Anuais</title>
     <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/sidebar.css" />
+    <link rel="stylesheet" href="css/componentes.css" />
     <link rel="stylesheet" href="css/despesas-anuais.css" />
   </head>
   <body>
     <div class="app">
-      <aside class="sidebar">
-        <div class="brand">MyFinance</div>
-        <nav class="menu">
-          <a href="dashboard.html">Dashboard</a>
-          <a href="contas.html">Contas</a>
-          <a href="despesas.html">Despesas</a>
-          <a href="receitas.html">Receitas</a>
-          <a href="investimentos.html">Investimentos</a>
-          <a href="fundo-emergencia.html">Fundo Emergência</a>
-          <a href="objetivos.html">Objetivos</a>
-          <a href="despesas-anuais.html" class="active">Despesas Anuais</a>
-          <a href="relatorios.html">Relatórios</a>
-        </nav>
-        <a href="configuracao.html" class="menu-config">Configuração</a>
-      </aside>
+      <aside id="sidebar" data-ativo="despesas-anuais"></aside>
+
       <main class="content">
         <div class="title-row">
-          <h1>Despesas Anuais</h1>
-          <button class="btn-add">Adicionar despesa anual</button>
+          <label class="ano-select">
+            <select id="ano" aria-label="Ano"></select>
+            <svg class="seta-baixo" viewBox="0 0 24 24">
+              <path d="M6 9l6 6 6-6" />
+            </svg>
+          </label>
+          <div class="acoes">
+            <button class="btn-add" id="btn-adicionar" type="button">
+              <span class="mais">+</span> Adicionar despesa anual
+            </button>
+          </div>
         </div>
-        <section class="card tabela-card">
-          <table class="tabela">
-            <thead>
-              <tr>
-                <th>Data</th>
-                <th>Descrição</th>
-                <th>Valor</th>
-                <th>Estado</th>
-              </tr>
-            </thead>
-            <tbody id="lista"></tbody>
-          </table>
-        </section>
-        <section class="banner">
-          <p data-campo="resumo">—</p>
+
+        <p class="aviso" id="aviso" hidden></p>
+
+        <section class="card painel">
+          <div class="scroll">
+            <table class="tabela">
+              <thead>
+                <tr>
+                  <th>Data</th>
+                  <th>Descrição</th>
+                  <th>Valor</th>
+                  <th>Estado</th>
+                </tr>
+              </thead>
+              <tbody id="corpo"></tbody>
+            </table>
+          </div>
+          <div class="resumo-prox">
+            <svg viewBox="0 0 24 24">
+              <path
+                d="M5 5h14a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1zM4 10h16M9 3v4M15 3v4M9 15l2 2 4-4"
+              />
+            </svg>
+            <p id="resumo">—</p>
+          </div>
         </section>
       </main>
     </div>
+
+    <dialog id="modal-despesa" class="modal">
+      <form id="form-despesa">
+        <h2 id="titulo-modal">Adicionar despesa anual</h2>
+        <label
+          >Data
+          <input type="date" name="data" required />
+        </label>
+        <label
+          >Descrição
+          <input
+            type="text"
+            name="descricao"
+            maxlength="80"
+            autocomplete="off"
+            placeholder="Ex.: Seguro carro"
+            required
+          />
+        </label>
+        <label
+          >Valor (€)
+          <input
+            type="text"
+            name="valor"
+            inputmode="decimal"
+            autocomplete="off"
+            placeholder="0,00"
+            required
+          />
+        </label>
+        <label class="check"
+          ><input type="checkbox" name="pago" /> Já está paga</label
+        >
+        <p id="erro-despesa" class="erro"></p>
+        <div class="modal-botoes">
+          <button type="button" id="btn-apagar" class="btn-apagar" hidden>
+            Apagar
+          </button>
+          <span class="espaco"></span>
+          <button type="button" id="btn-cancelar" class="btn-cancelar">
+            Cancelar
+          </button>
+          <button type="submit" class="btn-add" id="btn-guardar">
+            Guardar
+          </button>
+        </div>
+      </form>
+    </dialog>
+
+    <script src="js/sidebar.js"></script>
+    <script src="js/util.js"></script>
     <script src="js/despesas-anuais.js"></script>
   </body>
 </html>
