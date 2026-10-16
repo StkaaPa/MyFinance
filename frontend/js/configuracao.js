@@ -1,30 +1,50 @@
-const ENDPOINT = "/api/configuracao";
+// Configuração > Geral. Usa as funções de util.js: $, criar, api.
+const aviso = $("aviso");
+const form = $("form-config");
+const ok = $("ok");
+
+function mostrarAviso(msg) {
+  aviso.textContent = msg;
+  aviso.hidden = !msg;
+}
+
+const dia = form.elements.dia;
+for (let d = 1; d <= 28; d++) dia.append(new Option("Dia " + d, d)); // até 28: existe em todos os meses
 
 async function carregar() {
   try {
-    const r = await fetch(ENDPOINT);
-    if (!r.ok) throw new Error(r.status);
-    preencher(await r.json());
+    const c = await api("/api/configuracao");
+    dia.value = String(c.dia_inicio);
+    form.elements.moeda.value = c.moeda;
+    form.elements.idioma.value = c.idioma;
+    mostrarAviso("");
   } catch (e) {
-    console.warn("Sem dados de " + ENDPOINT + ":", e.message);
+    mostrarAviso("Não foi possível carregar a configuração: " + e.message);
   }
 }
 
-// Escreve cada valor do JSON no elemento com data-campo igual à chave
-function preencher(dados) {
-  for (const [chave, valor] of Object.entries(dados)) {
-    const el = document.querySelector('[data-campo="' + chave + '"]');
-    if (el) el.textContent = valor;
-  }
-}
+form.addEventListener("input", () => {
+  ok.hidden = true;
+});
 
-document.querySelectorAll(".tab").forEach((t) =>
-  t.addEventListener("click", () => {
-    document
-      .querySelectorAll(".tab")
-      .forEach((x) => x.classList.remove("active"));
-    t.classList.add("active");
-  }),
-);
+form.addEventListener("submit", async (evento) => {
+  evento.preventDefault();
+  const botao = $("btn-guardar");
+  botao.disabled = true;
+  try {
+    await api("/api/configuracao", "PUT", {
+      dia_inicio: Number(dia.value),
+      moeda: form.elements.moeda.value,
+      idioma: form.elements.idioma.value,
+    });
+    mostrarAviso("");
+    ok.hidden = false;
+  } catch (e) {
+    ok.hidden = true;
+    mostrarAviso("Não foi possível guardar: " + e.message);
+  } finally {
+    botao.disabled = false;
+  }
+});
 
 carregar();

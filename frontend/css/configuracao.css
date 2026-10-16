@@ -1,21 +1,118 @@
-.config {
-  max-width: 420px;
+/* Páginas de Configuração (Geral e Categorias) */
+.content {
+  gap: 14px;
 }
-.config label {
-  display: block;
-  margin-bottom: 14px;
-  font-weight: 600;
+
+.form-config {
+  padding: 22px 26px;
+  max-width: 560px;
 }
-.config small {
+.form-config label {
   display: block;
-  font-weight: 400;
+  margin-bottom: 18px;
+}
+.rotulo {
+  display: block;
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+.ajuda {
+  display: block;
+  font-size: 12px;
   color: var(--muted);
+  margin-bottom: 8px;
 }
-.config select {
-  display: block;
+.form-config select {
   width: 100%;
-  margin-top: 4px;
-  padding: 9px;
+  padding: 10px 12px;
   border: 1px solid var(--border);
   border-radius: 8px;
+  font: inherit;
+  font-size: 13px;
+  color: var(--text);
+  background: #fff;
+  cursor: pointer;
+  margin-top: 4px;
+}
+.form-config select:focus-visible {
+  outline: 2px solid var(--green);
+  border-color: transparent;
+}
+.form-config select:disabled {
+  cursor: default;
+  background: #f6f8fc;
+}
+.rodape-form {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 6px;
+}
+.rodape-form .btn-add {
+  padding: 10px 28px;
+  font-size: 13px;
+}
+.ok {
+  color: var(--green);
+  font-size: 12.5px;
+  font-weight: 600;
+}
+.ok[hidden] {
+  display: none;
+}
+.nota-config {
+  margin-top: 16px;
+  font-size: 11.5px;
+  color: var(--muted);
+}
+
+/* Categorias */
+.painel-cat {
+  padding: 6px 20px 14px;
+  display: flex;
+  flex-direction: column;
+  flex: 0 1 auto;
+  min-height: 0;
+  max-width: 760px;
+}
+.scroll {
+  overflow: auto;
+  min-height: 0;
+}
+.grupo-titulo {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 14px 0 6px;
+}
+.linha-cat {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 9px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 13px;
+}
+.linha-cat.sub {
+  padding-left: 26px;
+  color: var(--muted);
+}
+.linha-cat.inativa .nome-cat {
+  opacity: 0.5;
+  text-decoration: line-through;
+}
+.linha-cat .nome-cat {
+  flex: 1;
+}
+.linha-cat .nome-cat em {
+  font-style: normal;
+  font-size: 11px;
+  color: var(--muted);
+  margin-left: 6px;
+}
+.modal-cat label[hidden] {
+  display: none;
 }

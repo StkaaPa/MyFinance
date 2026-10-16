@@ -3,50 +3,58 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>MyFinance-Configuração</title>
+    <link rel="icon" href="data:," />
+    <title>MyFinance – Configuração</title>
     <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/sidebar.css" />
+    <link rel="stylesheet" href="css/componentes.css" />
     <link rel="stylesheet" href="css/configuracao.css" />
   </head>
   <body>
     <div class="app">
-      <aside class="sidebar">
-        <div class="brand">MyFinance-Configuração</div>
-        <nav class="menu">
-          <a href="dashboard.html">Dashboard</a>
-          <a href="contas.html">Contas</a>
-          <a href="despesas.html">Despesas</a>
-          <a href="receitas.html">Receitas</a>
-          <a href="investimentos.html">Investimentos</a>
-          <a href="fundo-emergencia.html">Fundo Emergência</a>
-          <a href="objetivos.html">Objetivos</a>
-          <a href="despesas-anuais.html">Despesas Anuais</a>
-          <a href="relatorios.html">Relatórios</a>
-        </nav>
-        <a href="configuracao.html" class="menu-config active">Configuração</a>
-      </aside>
+      <aside id="sidebar" data-modo="config" data-ativo="configuracao"></aside>
+
       <main class="content">
-        <div class="title-row">
-          <h1>Configuração</h1>
-        </div>
-        <form class="card box config">
-          <label>Período financeiro
-            <small>Define o dia de início do teu mês financeiro.</small>
+        <div class="title-row"><h1>Geral</h1></div>
+
+        <p class="aviso" id="aviso" hidden></p>
+
+        <form class="card form-config" id="form-config">
+          <label>
+            <span class="rotulo">Período financeiro</span>
+            <span class="ajuda"
+              >Define o dia de início do teu mês financeiro.</span
+            >
             <select name="dia"></select>
           </label>
-          <label>Moeda principal
+          <label>
+            <span class="rotulo">Moeda principal</span>
             <select name="moeda">
-              <option>EUR - Euro</option>
+              <option value="EUR">EUR - Euro</option>
             </select>
           </label>
-          <label>Idioma
+          <label>
+            <span class="rotulo">Idioma</span>
             <select name="idioma">
-              <option>Português</option>
+              <option value="pt">Português</option>
             </select>
           </label>
-          <button type="submit" class="btn-primary">Guardar</button>
+          <div class="rodape-form">
+            <button type="submit" class="btn-add" id="btn-guardar">
+              Guardar
+            </button>
+            <span class="ok" id="ok" hidden>Guardado.</span>
+          </div>
+          <p class="nota-config">
+            O dia escolhido é usado para sugerir o período do próximo «Fechar
+            mês». Os meses já fechados não mudam.
+          </p>
         </form>
       </main>
     </div>
+
+    <script src="js/sidebar.js"></script>
+    <script src="js/util.js"></script>
     <script src="js/configuracao.js"></script>
   </body>
 </html>

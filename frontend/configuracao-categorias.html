@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="pt-PT">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="data:," />
+    <title>MyFinance – Categorias</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/sidebar.css" />
+    <link rel="stylesheet" href="css/componentes.css" />
+    <link rel="stylesheet" href="css/configuracao.css" />
+  </head>
+  <body>
+    <div class="app">
+      <aside
+        id="sidebar"
+        data-modo="config"
+        data-ativo="configuracao-categorias"
+      ></aside>
+
+      <main class="content">
+        <div class="title-row">
+          <h1>Categorias</h1>
+          <div class="acoes">
+            <button class="btn-add" id="btn-adicionar" type="button">
+              <span class="mais">+</span> Adicionar categoria
+            </button>
+          </div>
+        </div>
+
+        <p class="aviso" id="aviso" hidden></p>
+
+        <section class="card painel-cat">
+          <div class="scroll" id="lista"></div>
+        </section>
+      </main>
+    </div>
+
+    <dialog id="modal-categoria" class="modal modal-cat">
+      <form id="form-categoria">
+        <h2>Adicionar categoria</h2>
+        <label
+          >Nome
+          <input
+            type="text"
+            name="nome"
+            maxlength="60"
+            autocomplete="off"
+            placeholder="Ex.: Ginásio"
+            required
+          />
+        </label>
+        <label
+          >Tipo
+          <select name="tipo">
+            <option value="despesa">Despesa</option>
+            <option value="receita">Receita</option>
+          </select>
+        </label>
+        <label
+          >Categoria-mãe
+          <select name="pai"></select>
+        </label>
+        <p class="nota">
+          Uma subcategoria soma na categoria de cima. Só há dois níveis. Os
+          valores do fecho mensal guardam-se na categoria mais baixa.
+        </p>
+        <p id="erro-categoria" class="erro"></p>
+        <div class="modal-botoes">
+          <button type="button" id="btn-cancelar" class="btn-cancelar">
+            Cancelar
+          </button>
+          <button type="submit" class="btn-add" id="btn-guardar">
+            Guardar
+          </button>
+        </div>
+      </form>
+    </dialog>
+
+    <script src="js/sidebar.js"></script>
+    <script src="js/util.js"></script>
+    <script src="js/configuracao-categorias.js"></script>
+  </body>
+</html>

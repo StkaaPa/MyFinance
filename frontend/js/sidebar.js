@@ -46,11 +46,41 @@ const icone = (d) =>
 (function () {
   const barra = document.getElementById("sidebar");
   const ativo = barra.dataset.ativo;
+  barra.className = "sidebar";
+  const marca = `<div class="brand">${icone("M5 20V10M12 20V4M19 20v-7")}<span>MyFinance</span></div>`;
+
+  // Páginas de Configuração: menu próprio (Geral, Categorias...), com a "Configuração" em baixo a azul
+  if (barra.dataset.modo === "config") {
+    const sub = [
+      [
+        "configuracao",
+        "Geral",
+        "M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zM12 8v4l3 2",
+      ],
+      ["configuracao-categorias", "Categorias", "M3 12V4h8l10 10-8 8zM8 8h.01"],
+      ["contas", "Contas", ITENS[1][2]],
+      ["investimentos", "Investimentos", ITENS[4][2]],
+      ["objetivos", "Objetivos", ITENS[6][2]],
+    ];
+    const itens =
+      sub
+        .map(
+          ([slug, nome, d]) =>
+            `<a href="${slug}.html" class="${slug === ativo ? "active" : ""}">${icone(d)}${nome}</a>`,
+        )
+        .join("") +
+      `<span class="desativado" title="Ainda não disponível">${icone("M6 9a6 6 0 0 1 12 0c0 6 2 7 2 7H4s2-1 2-7M10 20a2 2 0 0 0 4 0")}Notificações<small>em breve</small></span>`;
+    barra.innerHTML =
+      marca +
+      `<nav class="menu">${itens}</nav>` +
+      `<a href="configuracao.html" class="menu-config active">${icone(GEAR)}Configuração</a>`;
+    return;
+  }
+
   const link = (slug, nome, d, extra = "") =>
     `<a href="${slug}.html" class="${extra}${slug === ativo ? " active" : ""}">${icone(d)}${nome}</a>`;
-  barra.className = "sidebar";
   barra.innerHTML =
-    `<div class="brand">${icone("M5 20V10M12 20V4M19 20v-7")}<span>MyFinance</span></div>` +
+    marca +
     `<nav class="menu">${ITENS.map(([s, n, d]) => link(s, n, d)).join("")}</nav>` +
     link("configuracao", "Configuração", GEAR, "menu-config");
 })();
