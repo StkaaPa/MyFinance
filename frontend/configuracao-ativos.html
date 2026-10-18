@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="pt-PT">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="data:," />
+    <title>MyFinance – Ativos</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/sidebar.css" />
+    <link rel="stylesheet" href="css/componentes.css" />
+    <link rel="stylesheet" href="css/configuracao.css" />
+    <link rel="stylesheet" href="css/configuracao-ativos.css" />
+  </head>
+  <body>
+    <div class="app">
+      <aside
+        id="sidebar"
+        data-modo="config"
+        data-ativo="configuracao-ativos"
+      ></aside>
+
+      <main class="content">
+        <div class="title-row">
+          <h1>Ativos</h1>
+          <div class="acoes">
+            <button class="btn-add" id="btn-adicionar" type="button">
+              <span class="mais">+</span> Adicionar ativo
+            </button>
+          </div>
+        </div>
+
+        <p class="aviso" id="aviso" hidden></p>
+
+        <section class="card painel-cat painel-ativos">
+          <div class="scroll" id="lista"></div>
+        </section>
+      </main>
+    </div>
+
+    <dialog id="modal-ativo" class="modal">
+      <form id="form-ativo">
+        <h2 id="titulo-modal">Adicionar ativo</h2>
+        <label
+          >Nome
+          <input
+            type="text"
+            name="nome"
+            maxlength="60"
+            autocomplete="off"
+            placeholder="Ex.: ETF World"
+            required
+          />
+        </label>
+        <label
+          >Classe
+          <select name="classe">
+            <option value="etf">ETF</option>
+            <option value="acao">Ação</option>
+            <option value="cripto">Cripto</option>
+            <option value="ppr">PPR</option>
+            <option value="outro">Outro</option>
+          </select>
+        </label>
+        <label
+          >Conta
+          <select name="conta"></select>
+        </label>
+        <p class="nota" id="nota-ativo"></p>
+        <p id="erro-ativo" class="erro"></p>
+        <div class="modal-botoes">
+          <button type="button" id="btn-apagar" class="btn-apagar" hidden>
+            Apagar
+          </button>
+          <span class="espaco"></span>
+          <button type="button" id="btn-cancelar" class="btn-cancelar">
+            Cancelar
+          </button>
+          <button type="submit" class="btn-add">Guardar</button>
+        </div>
+      </form>
+    </dialog>
+
+    <script src="js/sidebar.js"></script>
+    <script src="js/util.js"></script>
+    <script src="js/configuracao-ativos.js"></script>
+  </body>
+</html>

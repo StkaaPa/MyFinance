@@ -68,8 +68,8 @@
   margin: 6px 0 4px;
 }
 .donut {
-  width: 140px;
-  height: 140px;
+  width: 180px;
+  height: 180px;
   border-radius: 50%;
   background: #e4e9f2;
   position: relative;
@@ -94,7 +94,7 @@
   list-style: none;
   flex: 1;
   max-width: 360px;
-  max-height: 150px;
+  max-height: 200px;
   overflow: auto;
   display: flex;
   flex-direction: column;

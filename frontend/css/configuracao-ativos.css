@@ -1,0 +1,26 @@
+/* Configuração > Ativos */
+.painel-ativos {
+  max-width: 760px;
+  width: 100%;
+}
+.etiqueta {
+  font-size: 10.5px;
+  font-weight: 700;
+  color: var(--muted);
+  background: #eef2f8;
+  border-radius: 6px;
+  padding: 2px 7px;
+  margin-left: 8px;
+}
+.linha-cat.inativa .etiqueta {
+  opacity: 0.6;
+}
+.aviso-conta {
+  font-size: 11px;
+  color: #b3392c;
+  margin-left: 8px;
+}
+.btn-apagar:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}

@@ -69,6 +69,11 @@ const icone = (d) =>
         "M4 20V4M4 20h16M7 15l3-3 3 2 5-6",
       ],
       ["contas", "Contas", ITENS[1][2]],
+      [
+        "configuracao-ativos",
+        "Ativos",
+        "M12 3l8 4.5v9L12 21l-8-4.5v-9zM12 12l8-4.5M12 12v9M12 12L4 7.5",
+      ],
       ["investimentos", "Investimentos", ITENS[4][2]],
       ["objetivos", "Objetivos", ITENS[6][2]],
     ];
