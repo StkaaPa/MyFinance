@@ -1,0 +1,89 @@
+/* Página Meses fechados */
+.content {
+  gap: 12px;
+}
+.painel {
+  padding: 6px 20px 12px;
+  display: flex;
+  flex-direction: column;
+  flex: 0 1 auto;
+  min-height: 0;
+}
+.scroll {
+  flex: 0 1 auto;
+  min-height: 0;
+  overflow: auto;
+}
+.tabela thead th {
+  position: sticky;
+  top: 0;
+  background: var(--card);
+}
+.tabela td,
+.tabela th {
+  padding: 13px 12px;
+}
+.tabela td:first-child {
+  font-weight: 600;
+}
+.tabela .periodo {
+  color: var(--muted);
+}
+.tabela .acoes-linha {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+.btn-linha {
+  background: #fff;
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 6px 12px;
+  font: inherit;
+  font-size: 11.5px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.btn-linha:hover {
+  border-color: #cfd8e6;
+  background: #fafbfd;
+}
+.btn-linha.perigo {
+  color: #b3392c;
+  border-color: #f0c9c4;
+}
+.btn-linha.perigo:hover {
+  background: #fdf2f1;
+}
+.btn-perigo {
+  background: #e5594a;
+  color: #fff;
+  border: 0;
+  border-radius: 8px;
+  padding: 9px 16px;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.btn-perigo:disabled {
+  opacity: 0.5;
+  cursor: wait;
+}
+.aviso-apagar {
+  font-size: 12.5px;
+  color: var(--muted);
+  line-height: 1.5;
+  margin-bottom: 8px;
+}
+#modal-apagar {
+  width: 420px;
+}
+
+@media (max-height: 760px) {
+  .tabela td,
+  .tabela th {
+    padding: 9px 12px;
+  }
+}

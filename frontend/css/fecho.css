@@ -248,6 +248,19 @@
   margin-top: 6px;
 }
 
+@media (max-height: 760px) {
+  .passos {
+    margin-top: 14px;
+  }
+  .passo {
+    min-height: 140px;
+    padding-top: 26px;
+  }
+  .btn-fechar {
+    margin-top: 12px;
+  }
+}
+
 /* Investimentos por ativo dentro do pop-up */
 .ativos-conta {
   font-size: 12px;
@@ -295,15 +308,15 @@
   border-color: transparent;
 }
 
-@media (max-height: 760px) {
-  .passos {
-    margin-top: 14px;
-  }
-  .passo {
-    min-height: 140px;
-    padding-top: 26px;
-  }
-  .btn-fechar {
-    margin-top: 12px;
-  }
+.link-fechos {
+  text-align: center;
+  font-size: 12px;
+  margin-top: 10px;
+}
+.link-fechos a {
+  color: var(--blue-active);
+  font-weight: 600;
+}
+.link-fechos a:hover {
+  text-decoration: underline;
 }

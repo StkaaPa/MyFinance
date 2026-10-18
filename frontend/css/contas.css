@@ -6,3 +6,33 @@
 .tabela tr.inativa td:not(:last-child) {
   opacity: 0.5;
 }
+
+/* Editar / apagar */
+.tabela tr.clicavel {
+  cursor: pointer;
+}
+.tabela tr.clicavel:hover td {
+  background: #fafbfd;
+}
+.modal-botoes .espaco {
+  flex: 1;
+}
+.btn-apagar {
+  background: #fff;
+  color: #b3392c;
+  border: 1px solid #f0c9c4;
+  border-radius: 8px;
+  padding: 9px 16px;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.btn-apagar[hidden] {
+  display: none;
+}
+.btn-apagar.confirmar {
+  background: #e5594a;
+  color: #fff;
+  border-color: #e5594a;
+}
