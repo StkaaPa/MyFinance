@@ -72,7 +72,9 @@ const icone = (d) =>
       ["investimentos", "Investimentos", ITENS[4][2]],
       ["objetivos", "Objetivos", ITENS[6][2]],
     ];
+    const voltar = `<a href="dashboard.html" class="voltar">${icone("M15 6l-6 6 6 6")}Voltar ao Dashboard</a>`;
     const itens =
+      voltar +
       sub
         .map(
           ([slug, nome, d]) =>

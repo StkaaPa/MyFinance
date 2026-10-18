@@ -18,3 +18,5 @@ for modulo in (contas, categorias, fechos, ativos, dashboard, despesas, receitas
 
 # Tem de ficar no FIM: serve o frontend em tudo o que não for /api
 app.mount("/", StaticFiles(directory="frontend", html=True), name="frontend")
+
+#python -m uvicorn backend.main:app --reload
