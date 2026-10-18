@@ -71,15 +71,28 @@ def distribuicao(rows, chave="nome"):
              "percentagem": round(r["valor"] / total * 100, 1) if total else 0} for r in rows]
 
 
-def evolucao_anual(conn, anos=5):
-    """Património no último mês fechado de cada ano (últimos N anos)."""
+def historico_anual(conn):
+    """Valores anuais inseridos à mão (patrimonio_historico). Devolve {} se a tabela ainda não existe."""
+    if not conn.execute("SELECT to_regclass('public.patrimonio_historico') AS t").fetchone()["t"]:
+        return {}
+    return {r["ano"]: float(r["valor"]) for r in conn.execute("SELECT ano, valor FROM patrimonio_historico")}
+
+
+def evolucao_anual(conn, anos=6):
+    """Património no fim de cada ano (últimos N anos).
+
+    Anos com meses fechados: soma dos saldos no último mês fechado desse ano.
+    Anos sem fechos: valor do histórico anual inserido à mão (se existir). Os fechos ganham sempre.
+    """
     rows = conn.execute("""
         SELECT EXTRACT(YEAR FROM f.mes_referencia)::int AS ano, SUM(s.saldo) AS patrimonio
         FROM fechos_mensais f JOIN saldos_conta s ON s.fecho_id = f.id
         WHERE f.mes_referencia = (SELECT MAX(f2.mes_referencia) FROM fechos_mensais f2
               WHERE EXTRACT(YEAR FROM f2.mes_referencia) = EXTRACT(YEAR FROM f.mes_referencia))
-        GROUP BY 1 ORDER BY 1 DESC LIMIT %s""", (anos,)).fetchall()
-    return [{"ano": r["ano"], "patrimonio": float(r["patrimonio"])} for r in reversed(rows)]
+        GROUP BY 1""").fetchall()
+    por_ano = historico_anual(conn)
+    por_ano.update({r["ano"]: float(r["patrimonio"]) for r in rows})
+    return [{"ano": a, "patrimonio": por_ano[a]} for a in sorted(por_ano)[-anos:]]
 
 
 def evolucao_mensal(conn, ate, meses=12):

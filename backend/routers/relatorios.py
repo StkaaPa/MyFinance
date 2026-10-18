@@ -5,11 +5,12 @@ Um só pedido devolve os dados dos quatro separadores: tendências, comparativos
 from fastapi import APIRouter
 
 from backend.database import ligar_database
+from backend.utils import historico_anual
 
 router = APIRouter(prefix="/api/relatorios", tags=["relatórios"])
 
-INVEST = ("investimento", "reforma")
-LIQUIDEZ = ("conta_ordem", "poupanca")
+INVEST = ("Investimento", "Reforma")
+LIQUIDEZ = ("Conta Ordem", "Poupança")
 
 
 def por_categoria(conn, fecho_id, tipo):
@@ -40,14 +41,21 @@ def relatorios():
         ultimos_por_ano = {}
         for m in meses:                      # o último mês fechado de cada ano
             ultimos_por_ano[m[:4]] = m
+        # Anos só com valor total inserido à mão (histórico anual): sem separação por tipo de conta
+        manual = {a: v for a, v in historico_anual(conn).items() if str(a) not in ultimos_por_ano}
         # Com menos de 2 anos de dados, barras por ano seriam uma só: mostra mês a mês (como no Dashboard)
-        if len(ultimos_por_ano) >= 2:
-            modo, escolhidos = "anual", list(ultimos_por_ano.values())[-6:]
+        if len(set(ultimos_por_ano) | {str(a) for a in manual}) >= 2:
+            modo = "anual"
+            anos = sorted(set(ultimos_por_ano) | {str(a) for a in manual})[-6:]
+            barras = [({"rotulo": a, "mes": ultimos_por_ano[a], "investimentos": float(pat[ultimos_por_ano[a]]["investimentos"]) if ultimos_por_ano[a] in pat else 0.0,
+                        "liquidez": float(pat[ultimos_por_ano[a]]["liquidez"]) if ultimos_por_ano[a] in pat else 0.0, "sem_detalhe": 0.0}
+                       if a in ultimos_por_ano else
+                       {"rotulo": a, "mes": a + "-12", "investimentos": 0.0, "liquidez": 0.0, "sem_detalhe": manual[int(a)]})
+                      for a in anos]
         else:
-            modo, escolhidos = "mensal", meses[-12:]
-        barras = [{"rotulo": m[:4] if modo == "anual" else m, "mes": m,
-                   "investimentos": float(pat[m]["investimentos"]) if m in pat else 0.0,
-                   "liquidez": float(pat[m]["liquidez"]) if m in pat else 0.0} for m in escolhidos]
+            modo = "mensal"
+            barras = [{"rotulo": m, "mes": m, "investimentos": float(pat[m]["investimentos"]) if m in pat else 0.0,
+                       "liquidez": float(pat[m]["liquidez"]) if m in pat else 0.0, "sem_detalhe": 0.0} for m in meses[-12:]]
 
         # --- receitas, despesas e taxa de poupança por mês (últimos 12) ---
         rd = conn.execute("""
