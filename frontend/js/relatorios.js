@@ -14,10 +14,10 @@ const MESES_CURTOS = [
   "Dez",
 ];
 const TIPOS_CONTA = {
-  conta_ordem: "Conta à ordem",
-  poupanca: "Poupança",
-  investimento: "Investimento",
-  reforma: "Reforma",
+  "Conta Ordem": "Conta à ordem",
+  Poupança: "Poupança",
+  Investimento: "Investimento",
+  Reforma: "Reforma",
 };
 const PALETA = [
   "#2f6be0",
@@ -31,6 +31,7 @@ const PALETA = [
 ];
 const COR_INVEST = "#2f6be0",
   COR_LIQUIDEZ = "#2bb08a",
+  COR_SEM_DETALHE = "#9aa7bd",
   COR_REC = "#2bb08a",
   COR_DESP = "#ef6a5a";
 
@@ -297,18 +298,18 @@ function tendencias() {
     g,
     p.barras.map((b) => ({
       rotulo: p.modo === "anual" ? b.rotulo : mesCurto(b.mes),
-      valores: [b.investimentos, b.liquidez],
+      valores: [b.investimentos, b.liquidez, b.sem_detalhe || 0],
     })),
-    [COR_INVEST, COR_LIQUIDEZ],
+    [COR_INVEST, COR_LIQUIDEZ, COR_SEM_DETALHE],
     true,
   );
-  esq.append(
-    g,
-    legendaGraf([
-      ["Investimentos e reforma", COR_INVEST],
-      ["Contas à ordem e poupança", COR_LIQUIDEZ],
-    ]),
-  );
+  const legenda = [
+    ["Investimentos e reforma", COR_INVEST],
+    ["Contas à ordem e poupança", COR_LIQUIDEZ],
+  ];
+  if (p.barras.some((b) => b.sem_detalhe > 0))
+    legenda.push(["Total do histórico anual", COR_SEM_DETALHE]);
+  esq.append(g, legendaGraf(legenda));
   return [esq, listaDespesasMedias()];
 }
 

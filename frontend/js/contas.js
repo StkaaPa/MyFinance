@@ -76,7 +76,33 @@
     return r.status === 204 ? null : r.json();
   }
 
-  function abrirModal() {
+  const titulo = modal.querySelector("h2");
+  const botaoGuardar = form.querySelector('button[type="submit"]');
+  const botoes = form.querySelector(".modal-botoes");
+
+  // Botão "Apagar": só aparece ao editar (criado aqui, para o HTML não precisar de mudar)
+  const botaoApagar = criar("button", "btn-apagar", "Apagar");
+  botaoApagar.type = "button";
+  botaoApagar.hidden = true;
+  if (botoes)
+    botoes.prepend(
+      botaoApagar,
+      Object.assign(document.createElement("span"), { className: "espaco" }),
+    );
+
+  function abrirModal(conta) {
+    editar = conta || null;
+    form.reset();
+    erro.textContent = "";
+    if (conta) {
+      form.elements.nome.value = conta.nome;
+      form.elements.instituicao.value = conta.instituicao;
+      form.elements.tipo.value = conta.tipo;
+    }
+    if (titulo) titulo.textContent = conta ? "Editar conta" : "Adicionar conta";
+    botaoApagar.hidden = !conta;
+    botaoApagar.classList.remove("confirmar");
+    botaoApagar.textContent = "Apagar";
     if (typeof modal.showModal === "function") modal.showModal();
     else modal.setAttribute("open", "");
   }
@@ -111,6 +137,8 @@
     return input;
   }
 
+  let editar = null; // conta em edição (null = a adicionar)
+
   function desenhar(contas) {
     corpo.replaceChildren();
     if (!contas.length) {
@@ -130,6 +158,10 @@
       const tr = criar("tr", c.ativo ? "" : "inativa");
       const tdAtivo = criar("td");
       tdAtivo.append(interruptor(c, tr));
+      tdAtivo.addEventListener("click", (e) => e.stopPropagation()); // mexer no interruptor não abre a edição
+      tr.classList.add("clicavel");
+      tr.title = "Clica para editar ou apagar";
+      tr.addEventListener("click", () => abrirModal(c));
       tr.append(
         criar("td", "", c.nome),
         criar("td", "muted-td", c.instituicao),
@@ -154,15 +186,28 @@
   /* ---------- Pop-up "Adicionar conta" ---------- */
 
   const btnAdicionar = $("btn-adicionar");
-  if (btnAdicionar) {
-    btnAdicionar.addEventListener("click", () => {
-      form.reset();
-      erro.textContent = "";
-      abrirModal();
-    });
-  } else {
-    console.error('Falta o botão com id="btn-adicionar" no contas.html');
-  }
+  if (btnAdicionar)
+    btnAdicionar.addEventListener("click", () => abrirModal(null));
+  else console.error('Falta o botão com id="btn-adicionar" no contas.html');
+
+  // Apagar pede confirmação com um segundo clique
+  botaoApagar.addEventListener("click", async () => {
+    if (!botaoApagar.classList.contains("confirmar")) {
+      botaoApagar.classList.add("confirmar");
+      botaoApagar.textContent = "Confirmar: apagar";
+      return;
+    }
+    try {
+      await api("/api/contas/" + editar.id, "DELETE");
+    } catch (e) {
+      erro.textContent = e.message;
+      botaoApagar.classList.remove("confirmar");
+      botaoApagar.textContent = "Apagar";
+      return;
+    }
+    fecharModal();
+    carregarContas();
+  });
 
   const btnCancelar = $("btn-cancelar");
   if (btnCancelar) btnCancelar.addEventListener("click", fecharModal);
@@ -180,9 +225,10 @@
       return;
     }
     try {
-      await api("/api/contas", "POST", dados);
+      if (editar) await api("/api/contas/" + editar.id, "PATCH", dados);
+      else await api("/api/contas", "POST", dados);
     } catch (e) {
-      erro.textContent = "Não foi possível guardar a conta: " + e.message;
+      erro.textContent = e.message;
       return;
     }
     fecharModal();

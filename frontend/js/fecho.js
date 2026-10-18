@@ -96,6 +96,8 @@
   let modal = null,
     form = null,
     dados = null;
+  let editarId = null,
+    aoGuardar = null; // editarId = fecho em correção (null = a fechar um mês novo)
 
   function construir() {
     if (modal) return;
@@ -372,7 +374,7 @@
       }
       const conta = tipo === "conta";
       if (v === null) {
-        if (conta)
+        if (conta && !i.dataset.opcional)
           return mostrarErro(
             `Indica o saldo de «${i.dataset.nome}» (0 se estiver vazia).`,
             i,
@@ -400,42 +402,107 @@
     const botao = form.querySelector("#fecho-guardar");
     botao.disabled = true;
     try {
-      await api("/api/fechos", "POST", {
+      const corpo = {
         mes_referencia: fim.slice(0, 7),
         data_inicio: inicio,
         data_fim: fim,
         saldos,
         movimentos,
         ativos: [...ativos.values()],
-      });
+      };
+      if (editarId === null) await api("/api/fechos", "POST", corpo);
+      else await api("/api/fechos/" + editarId, "PUT", corpo);
     } catch (e) {
       botao.disabled = false;
       return mostrarErro(e.message);
     }
     modal.close();
+    if (aoGuardar) {
+      aoGuardar();
+      return;
+    } // aberto a partir da lista de meses: volta a ela
     window.location.href = "dashboard.html"; // passo 4: vê os resultados
   }
 
-  async function abrirFecho() {
+  // Põe nos campos os valores de um fecho que já existe (modo correção)
+  function preencherValores(f) {
+    const pomos = (sel, v) => {
+      const i = form.querySelector(sel);
+      if (i && v !== null && v !== undefined)
+        i.value = String(v).replace(".", ",");
+    };
+    for (const m of f.movimentos)
+      pomos(
+        `input[data-tipo="receita"][data-id="${m.categoria_id}"], input[data-tipo="despesa"][data-id="${m.categoria_id}"]`,
+        m.valor,
+      );
+    for (const x of f.saldos)
+      pomos(`input[data-tipo="conta"][data-id="${x.conta_id}"]`, x.saldo);
+    // Ao corrigir, uma conta que NÃO tinha saldo neste mês (ex.: criada depois) deixa de ser obrigatória
+    const comSaldo = new Set(f.saldos.map((x) => String(x.conta_id)));
+    for (const i of form.querySelectorAll('input[data-tipo="conta"]')) {
+      if (comSaldo.has(i.dataset.id)) continue;
+      i.dataset.opcional = "1";
+      const dica = i.parentElement.querySelector("small");
+      if (dica) dica.textContent = "Opcional: sem saldo neste mês";
+    }
+    for (const a of f.ativos) {
+      pomos(`input[data-tipo="ativo"][data-id="${a.ativo_id}"]`, a.valor);
+      if (a.depositado !== 0)
+        pomos(
+          `input[data-tipo="deposito"][data-id="${a.ativo_id}"]`,
+          a.depositado,
+        );
+    }
+  }
+
+  // abrirFecho()            -> fechar um mês novo
+  // abrirFecho(id, depois)  -> corrigir o fecho `id`; `depois` é chamada quando se guarda
+  async function abrirFecho(id, depois) {
     construir();
+    editarId = Number.isInteger(id) ? id : null;
+    aoGuardar = typeof depois === "function" ? depois : null;
     form.reset();
     mostrarErro("");
     form.querySelector("#fecho-guardar").disabled = false;
+    let existente = null;
     try {
-      dados = await api("/api/fechos/formulario");
+      if (editarId === null) dados = await api("/api/fechos/formulario");
+      else
+        [dados, existente] = await Promise.all([
+          api("/api/fechos/formulario?fecho_id=" + editarId),
+          api("/api/fechos/" + editarId),
+        ]);
     } catch (e) {
       dados = {
         contas: [],
         categorias: [],
+        ativos: [],
         data_inicio_sugerida: null,
         dia_inicio_configurado: 27,
       };
+      existente = null;
       mostrarErro("Não foi possível carregar o formulário: " + e.message);
     }
+    modal.querySelector("h2").textContent = existente
+      ? "Corrigir fecho de " + nomeMes(existente.mes)
+      : "Fechar mês";
+    modal.querySelector(".fecho-topo p").textContent = existente
+      ? "Altera o que estiver errado e guarda. O mês fica exatamente como se tivesse sido bem preenchido à primeira."
+      : "Indica os valores do mês. Os campos em branco nas categorias contam como zero.";
+    form.querySelector("#fecho-guardar").textContent = existente
+      ? "Guardar alterações"
+      : "Fechar mês";
     preencher();
-    const [ini, fim] = periodoSugerido(dados);
-    form.elements.inicio.value = ini;
-    form.elements.fim.value = fim;
+    if (existente) {
+      form.elements.inicio.value = existente.data_inicio;
+      form.elements.fim.value = existente.data_fim;
+      preencherValores(existente);
+    } else {
+      const [ini, fim] = periodoSugerido(dados);
+      form.elements.inicio.value = ini;
+      form.elements.fim.value = fim;
+    }
     atualizar();
     if (typeof modal.showModal === "function") modal.showModal();
     else modal.setAttribute("open", "");
@@ -443,5 +510,5 @@
 
   window.abrirFecho = abrirFecho;
   const botao = document.getElementById("btn-fechar");
-  if (botao) botao.addEventListener("click", abrirFecho);
+  if (botao) botao.addEventListener("click", () => abrirFecho());
 })();

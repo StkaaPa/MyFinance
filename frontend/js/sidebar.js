@@ -58,6 +58,16 @@ const icone = (d) =>
         "M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zM12 8v4l3 2",
       ],
       ["configuracao-categorias", "Categorias", "M3 12V4h8l10 10-8 8zM8 8h.01"],
+      [
+        "fechos",
+        "Meses fechados",
+        "M5 5h14a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1zM4 10h16M9 3v4M15 3v4M9 15l2 2 4-4",
+      ],
+      [
+        "configuracao-historico",
+        "Histórico anual",
+        "M4 20V4M4 20h16M7 15l3-3 3 2 5-6",
+      ],
       ["contas", "Contas", ITENS[1][2]],
       ["investimentos", "Investimentos", ITENS[4][2]],
       ["objetivos", "Objetivos", ITENS[6][2]],
