@@ -38,7 +38,7 @@
 
     <dialog id="modal-categoria" class="modal modal-cat">
       <form id="form-categoria">
-        <h2>Adicionar categoria</h2>
+        <h2 id="titulo-modal">Adicionar categoria</h2>
         <label
           >Nome
           <input
@@ -61,12 +61,16 @@
           >Categoria-mãe
           <select name="pai"></select>
         </label>
-        <p class="nota">
+        <p class="nota" id="nota-categoria">
           Uma subcategoria soma na categoria de cima. Só há dois níveis. Os
           valores do fecho mensal guardam-se na categoria mais baixa.
         </p>
         <p id="erro-categoria" class="erro"></p>
         <div class="modal-botoes">
+          <button type="button" id="btn-apagar" class="btn-apagar" hidden>
+            Apagar
+          </button>
+          <span class="espaco"></span>
           <button type="button" id="btn-cancelar" class="btn-cancelar">
             Cancelar
           </button>

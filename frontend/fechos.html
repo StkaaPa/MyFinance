@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="pt-PT">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="data:," />
+    <title>MyFinance – Meses fechados</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/sidebar.css" />
+    <link rel="stylesheet" href="css/componentes.css" />
+    <link rel="stylesheet" href="css/fecho.css" />
+    <link rel="stylesheet" href="css/fechos.css" />
+  </head>
+  <body>
+    <div class="app">
+      <aside id="sidebar" data-modo="config" data-ativo="fechos"></aside>
+
+      <main class="content">
+        <div class="title-row">
+          <h1>Meses fechados</h1>
+          <div class="acoes">
+            <button class="btn-add" id="btn-novo" type="button">
+              <span class="mais">+</span> Fechar mês
+            </button>
+          </div>
+        </div>
+
+        <p class="aviso" id="aviso" hidden></p>
+        <p class="aviso info" id="info" hidden></p>
+
+        <section class="card painel">
+          <div class="scroll">
+            <table class="tabela">
+              <thead>
+                <tr>
+                  <th>Mês</th>
+                  <th>Período</th>
+                  <th class="dir">Património</th>
+                  <th class="dir">Receitas</th>
+                  <th class="dir">Despesas</th>
+                  <th class="dir">Ações</th>
+                </tr>
+              </thead>
+              <tbody id="corpo"></tbody>
+            </table>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <dialog id="modal-apagar" class="modal">
+      <h2 id="apagar-titulo">Apagar fecho</h2>
+      <p class="aviso-apagar">
+        Isto apaga todos os valores desse mês: receitas, despesas, saldos das
+        contas e valores dos investimentos. Não dá para desfazer. Se só queres
+        mudar valores, usa «Corrigir».
+      </p>
+      <p class="erro" id="erro-apagar"></p>
+      <div class="modal-botoes">
+        <button type="button" class="btn-cancelar" id="apagar-cancelar">
+          Cancelar
+        </button>
+        <button type="button" class="btn-perigo" id="apagar-confirmar">
+          Apagar mês
+        </button>
+      </div>
+    </dialog>
+
+    <script src="js/sidebar.js"></script>
+    <script src="js/util.js"></script>
+    <script src="js/fecho.js"></script>
+    <script src="js/fechos.js"></script>
+  </body>
+</html>

@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="pt-PT">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="data:," />
+    <title>MyFinance – Histórico anual</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/sidebar.css" />
+    <link rel="stylesheet" href="css/componentes.css" />
+    <link rel="stylesheet" href="css/configuracao.css" />
+    <link rel="stylesheet" href="css/configuracao-historico.css" />
+  </head>
+  <body>
+    <div class="app">
+      <aside
+        id="sidebar"
+        data-modo="config"
+        data-ativo="configuracao-historico"
+      ></aside>
+
+      <main class="content">
+        <div class="title-row">
+          <h1>Histórico anual</h1>
+          <div class="acoes">
+            <button class="btn-cancelar" id="btn-ano-anterior" type="button">
+              + Ano anterior
+            </button>
+            <button class="btn-add" id="btn-guardar" type="button">
+              Guardar
+            </button>
+          </div>
+        </div>
+
+        <p class="aviso" id="aviso" hidden></p>
+        <p class="aviso info" id="ok" hidden></p>
+
+        <section class="card painel-cat painel-hist">
+          <p class="ajuda-hist">
+            Património total no fim de cada ano (a soma de todas as contas e
+            investimentos). Serve para os anos em que ainda não usavas a
+            MyFinance mês a mês. Deixa em branco os anos que não tens.
+          </p>
+          <div class="cab-hist">
+            <span>Ano</span><span>Património</span><span>Origem</span>
+          </div>
+          <div class="scroll" id="lista"></div>
+        </section>
+      </main>
+    </div>
+
+    <script src="js/sidebar.js"></script>
+    <script src="js/util.js"></script>
+    <script src="js/configuracao-historico.js"></script>
+  </body>
+</html>
