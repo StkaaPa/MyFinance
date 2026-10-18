@@ -12,7 +12,7 @@ from backend.database import ligar_database
 from backend.utils import MES, fecho_anterior, obter_fecho, tem_ativos
 
 router = APIRouter(prefix="/api/investimentos", tags=["investimentos"])
-TIPOS = ["investimento", "reforma"]
+TIPOS = ["Investimento", "Reforma"]
 
 
 def fecho_base(conn, fecho):
