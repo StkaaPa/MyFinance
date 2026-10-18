@@ -142,3 +142,11 @@ CREATE TABLE valores_ativo (
   depositado NUMERIC(12,2) NOT NULL DEFAULT 0,   -- negativo = levantaste/vendeste
   UNIQUE (ativo_id, fecho_id)
 );
+
+
+-- Histórico anual do património (valores de fim de ano, de antes de usares a MyFinance mês a mês).
+-- Corre uma vez no psql, na base de dados myfinance:  \i database/patrimonio_historico.sql
+CREATE TABLE IF NOT EXISTS patrimonio_historico (
+  ano   INTEGER       PRIMARY KEY CHECK (ano BETWEEN 1990 AND 2100),
+  valor NUMERIC(12,2) NOT NULL CHECK (valor >= 0)
+);
