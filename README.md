@@ -65,28 +65,28 @@ Isto torna o registo rápido (alguns minutos por mês) e mantém o histórico si
 
 ### Páginas
 
-| Página | Descrição |
-|---|---|
-| **Dashboard** | Património total, receitas, despesas e taxa de poupança do mês, cada um com a variação face ao mês anterior. Gráfico de evolução do património (anual quando há pelo menos dois anos de dados, mensal caso contrário), distribuição do património por tipo de conta e estado do fundo de emergência. |
-| **Contas** | Criação, edição, ativação/desativação e remoção de contas (conta à ordem, poupança, investimento, reforma). Suporta várias contas do mesmo tipo em instituições diferentes. |
-| **Despesas** | Despesas do mês agrupadas por categoria e subcategoria. |
-| **Receitas** | Receitas do mês agrupadas por categoria. |
-| **Investimentos** | Valor de cada ativo, variação mensal, **rendimento real** (sem contar o dinheiro depositado), rendimento no ano, distribuição por classe de ativo e últimos movimentos. |
-| **Fundo de Emergência** | Objetivo especial associado a uma conta, com progresso e estimativa de meses em falta. |
-| **Objetivos** | Metas de poupança com valor alvo, contribuição mensal e previsão de meses restantes. |
-| **Despesas Anuais** | Despesas que ocorrem uma vez por ano, com estado previsto/pago e total ainda por pagar. |
-| **Relatórios** | Quatro separadores: Tendências (evolução do património), Comparativos (receitas vs. despesas, mês atual vs. anterior), Taxa de Poupança e Distribuição. |
+| Página                  | Descrição                                                                                                                                                                                                                                                                                            |
+| ----------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Dashboard**           | Património total, receitas, despesas e taxa de poupança do mês, cada um com a variação face ao mês anterior. Gráfico de evolução do património (anual quando há pelo menos dois anos de dados, mensal caso contrário), distribuição do património por tipo de conta e estado do fundo de emergência. |
+| **Contas**              | Criação, edição, ativação/desativação e remoção de contas (conta à ordem, poupança, investimento, reforma). Suporta várias contas do mesmo tipo em instituições diferentes.                                                                                                                          |
+| **Despesas**            | Despesas do mês agrupadas por categoria e subcategoria.                                                                                                                                                                                                                                              |
+| **Receitas**            | Receitas do mês agrupadas por categoria.                                                                                                                                                                                                                                                             |
+| **Investimentos**       | Valor de cada ativo, variação mensal, **rendimento real** (sem contar o dinheiro depositado), rendimento no ano, distribuição por classe de ativo e últimos movimentos.                                                                                                                              |
+| **Fundo de Emergência** | Objetivo especial associado a uma conta, com progresso e estimativa de meses em falta.                                                                                                                                                                                                               |
+| **Objetivos**           | Metas de poupança com valor alvo, contribuição mensal e previsão de meses restantes.                                                                                                                                                                                                                 |
+| **Despesas Anuais**     | Despesas que ocorrem uma vez por ano, com estado previsto/pago e total ainda por pagar.                                                                                                                                                                                                              |
+| **Relatórios**          | Quatro separadores: Tendências (evolução do património), Comparativos (receitas vs. despesas, mês atual vs. anterior), Taxa de Poupança e Distribuição.                                                                                                                                              |
 
 ### Configuração
 
-| Área | Descrição |
-|---|---|
-| **Geral** | Dia de início do mês de referência, moeda e idioma. |
-| **Categorias** | Criação, edição, ativação/desativação e remoção de categorias e subcategorias, com associação a uma categoria-mãe existente. |
-| **Meses fechados** | Lista de todos os fechos, com possibilidade de **corrigir** ou **apagar** um mês. |
-| **Histórico anual** | Registo do património de fim de ano para anos anteriores ao uso da aplicação. |
-| **Contas** | Gestão de contas. |
-| **Ativos** | Gestão dos ativos de investimento (nome, classe, conta, ativo/inativo). |
+| Área                | Descrição                                                                                                                    |
+| ------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| **Geral**           | Dia de início do mês de referência, moeda e idioma.                                                                          |
+| **Categorias**      | Criação, edição, ativação/desativação e remoção de categorias e subcategorias, com associação a uma categoria-mãe existente. |
+| **Meses fechados**  | Lista de todos os fechos, com possibilidade de **corrigir** ou **apagar** um mês.                                            |
+| **Histórico anual** | Registo do património de fim de ano para anos anteriores ao uso da aplicação.                                                |
+| **Contas**          | Gestão de contas.                                                                                                            |
+| **Ativos**          | Gestão dos ativos de investimento (nome, classe, conta, ativo/inativo).                                                      |
 
 ### Fecho do mês
 
@@ -186,19 +186,19 @@ erDiagram
 
 ### Tabelas
 
-| Tabela | Descrição | Colunas principais |
-|---|---|---|
-| `contas` | Contas do utilizador | `nome`, `instituicao`, `tipo` (`conta_ordem`, `poupanca`, `investimento`, `reforma`), `ativo` |
-| `categorias` | Categorias e subcategorias | `nome`, `tipo` (`despesa`, `receita`), `categoria_pai_id`, `ativo` |
-| `fechos_mensais` | Um registo por mês fechado | `mes_referencia` (único, dia 1), `data_inicio`, `data_fim`, `fechado_em` |
-| `saldos_conta` | Saldo de cada conta em cada fecho | `conta_id`, `fecho_id`, `saldo` |
-| `movimentos_categoria` | Valor de cada categoria em cada fecho | `categoria_id`, `fecho_id`, `valor` (≥ 0) |
-| `ativos` | Investimentos dentro de uma conta | `nome`, `classe` (`etf`, `acao`, `cripto`, `ppr`, `outro`), `conta_id`, `ativo` |
-| `valores_ativo` | Valor e depósito de cada ativo em cada fecho | `ativo_id`, `fecho_id`, `valor` (≥ 0), `depositado` |
-| `objetivos` | Metas de poupança e fundo de emergência | `nome`, `valor_alvo`, `valor_atual`, `contribuicao_mensal`, `fundo_emergencia`, `conta_id`, `icone` |
-| `despesas_anuais` | Despesas anuais previstas ou pagas | `data`, `descricao`, `valor`, `pago` |
-| `configuracoes` | Definições gerais (chave/valor) | `chave`, `valor` |
-| `patrimonio_historico` | Património de fim de ano | `ano` (chave), `valor` (≥ 0) |
+| Tabela                 | Descrição                                    | Colunas principais                                                                                  |
+| ---------------------- | -------------------------------------------- | --------------------------------------------------------------------------------------------------- |
+| `contas`               | Contas do utilizador                         | `nome`, `instituicao`, `tipo` (`conta_ordem`, `poupanca`, `investimento`, `reforma`), `ativo`       |
+| `categorias`           | Categorias e subcategorias                   | `nome`, `tipo` (`despesa`, `receita`), `categoria_pai_id`, `ativo`                                  |
+| `fechos_mensais`       | Um registo por mês fechado                   | `mes_referencia` (único, dia 1), `data_inicio`, `data_fim`, `fechado_em`                            |
+| `saldos_conta`         | Saldo de cada conta em cada fecho            | `conta_id`, `fecho_id`, `saldo`                                                                     |
+| `movimentos_categoria` | Valor de cada categoria em cada fecho        | `categoria_id`, `fecho_id`, `valor` (≥ 0)                                                           |
+| `ativos`               | Investimentos dentro de uma conta            | `nome`, `classe` (`etf`, `acao`, `cripto`, `ppr`, `outro`), `conta_id`, `ativo`                     |
+| `valores_ativo`        | Valor e depósito de cada ativo em cada fecho | `ativo_id`, `fecho_id`, `valor` (≥ 0), `depositado`                                                 |
+| `objetivos`            | Metas de poupança e fundo de emergência      | `nome`, `valor_alvo`, `valor_atual`, `contribuicao_mensal`, `fundo_emergencia`, `conta_id`, `icone` |
+| `despesas_anuais`      | Despesas anuais previstas ou pagas           | `data`, `descricao`, `valor`, `pago`                                                                |
+| `configuracoes`        | Definições gerais (chave/valor)              | `chave`, `valor`                                                                                    |
+| `patrimonio_historico` | Património de fim de ano                     | `ano` (chave), `valor` (≥ 0)                                                                        |
 
 ### Restrições de integridade
 
@@ -268,7 +268,7 @@ myfinance/
 ### 1. Obter o código
 
 ```bash
-git clone https://github.com/<utilizador>/myfinance.git
+git clone https://github.com/StkaaPa/myfinance.git
 cd myfinance
 ```
 
@@ -318,11 +318,11 @@ python -m uvicorn backend.main:app --reload
 
 Abrir <http://localhost:8000/dashboard.html>.
 
-| Endereço | Conteúdo |
-|---|---|
-| `http://localhost:8000/dashboard.html` | Aplicação |
-| `http://localhost:8000/docs` | Documentação interativa da API (Swagger) |
-| `http://localhost:8000/api/saude` | Verificação de estado |
+| Endereço                               | Conteúdo                                 |
+| -------------------------------------- | ---------------------------------------- |
+| `http://localhost:8000/dashboard.html` | Aplicação                                |
+| `http://localhost:8000/docs`           | Documentação interativa da API (Swagger) |
+| `http://localhost:8000/api/saude`      | Verificação de estado                    |
 
 > A aplicação deve ser sempre acedida pela porta `8000`. Abrir os ficheiros HTML diretamente ou por outro servidor estático (por exemplo, a extensão Live Server) impede o carregamento do CSS, do JS e da API.
 
@@ -330,12 +330,12 @@ Abrir <http://localhost:8000/dashboard.html>.
 
 ## Configuração
 
-| Definição | Onde | Descrição |
-|---|---|---|
-| `DB_PASSWORD` | `.env` | Palavra-passe do utilizador PostgreSQL. |
+| Definição               | Onde                  | Descrição                                                               |
+| ----------------------- | --------------------- | ----------------------------------------------------------------------- |
+| `DB_PASSWORD`           | `.env`                | Palavra-passe do utilizador PostgreSQL.                                 |
 | Ligação à base de dados | `backend/database.py` | Por omissão: `localhost:5432`, base `myfinance`, utilizador `postgres`. |
-| Dia de início do mês | Configuração > Geral | Dia (1 a 28) em que começa o período de cada fecho. Por omissão, 27. |
-| Moeda e idioma | Configuração > Geral | Guardados em `configuracoes`. |
+| Dia de início do mês    | Configuração > Geral  | Dia (1 a 28) em que começa o período de cada fecho. Por omissão, 27.    |
+| Moeda e idioma          | Configuração > Geral  | Guardados em `configuracoes`.                                           |
 
 ---
 
@@ -361,24 +361,24 @@ Um mês já fechado pode ser **corrigido** ou **apagado** em Configuração > Me
 
 Documentação interativa e esquemas completos em `/docs`.
 
-| Recurso | Métodos | Descrição |
-|---|---|---|
-| `/api/dashboard` | `GET` | Indicadores, evolução e distribuição de um mês. |
-| `/api/contas` | `GET` `POST` `PATCH /{id}` `DELETE /{id}` | Contas. |
-| `/api/categorias` | `GET` `POST` `PATCH /{id}` `DELETE /{id}` | Categorias e subcategorias. |
-| `/api/ativos` | `GET` `POST` `PATCH /{id}` `DELETE /{id}` | Ativos de investimento. |
-| `/api/fechos` | `GET` `POST` `GET /{id}` `PUT /{id}` `DELETE /{id}` | Fechos mensais. |
-| `/api/fechos/formulario` | `GET` | Dados necessários ao formulário de fecho (novo ou correção). |
-| `/api/despesas` | `GET` | Despesas de um mês. |
-| `/api/receitas` | `GET` | Receitas de um mês. |
-| `/api/investimentos` | `GET` | Valor, variação e rendimento por ativo. |
-| `/api/fundo-emergencia` | `GET` `PUT` | Fundo de emergência. |
-| `/api/objetivos` | `GET` `POST` `PATCH /{id}` `DELETE /{id}` | Objetivos. |
-| `/api/despesas-anuais` | `GET` `POST` `PATCH /{id}` `DELETE /{id}` | Despesas anuais. |
-| `/api/relatorios` | `GET` | Dados dos quatro separadores dos relatórios. |
-| `/api/patrimonio-historico` | `GET` `PUT` | Histórico anual (gravação em lote, tudo ou nada). |
-| `/api/configuracao` | `GET` `PUT` | Definições gerais. |
-| `/api/saude` | `GET` | Verificação de estado. |
+| Recurso                     | Métodos                                             | Descrição                                                    |
+| --------------------------- | --------------------------------------------------- | ------------------------------------------------------------ |
+| `/api/dashboard`            | `GET`                                               | Indicadores, evolução e distribuição de um mês.              |
+| `/api/contas`               | `GET` `POST` `PATCH /{id}` `DELETE /{id}`           | Contas.                                                      |
+| `/api/categorias`           | `GET` `POST` `PATCH /{id}` `DELETE /{id}`           | Categorias e subcategorias.                                  |
+| `/api/ativos`               | `GET` `POST` `PATCH /{id}` `DELETE /{id}`           | Ativos de investimento.                                      |
+| `/api/fechos`               | `GET` `POST` `GET /{id}` `PUT /{id}` `DELETE /{id}` | Fechos mensais.                                              |
+| `/api/fechos/formulario`    | `GET`                                               | Dados necessários ao formulário de fecho (novo ou correção). |
+| `/api/despesas`             | `GET`                                               | Despesas de um mês.                                          |
+| `/api/receitas`             | `GET`                                               | Receitas de um mês.                                          |
+| `/api/investimentos`        | `GET`                                               | Valor, variação e rendimento por ativo.                      |
+| `/api/fundo-emergencia`     | `GET` `PUT`                                         | Fundo de emergência.                                         |
+| `/api/objetivos`            | `GET` `POST` `PATCH /{id}` `DELETE /{id}`           | Objetivos.                                                   |
+| `/api/despesas-anuais`      | `GET` `POST` `PATCH /{id}` `DELETE /{id}`           | Despesas anuais.                                             |
+| `/api/relatorios`           | `GET`                                               | Dados dos quatro separadores dos relatórios.                 |
+| `/api/patrimonio-historico` | `GET` `PUT`                                         | Histórico anual (gravação em lote, tudo ou nada).            |
+| `/api/configuracao`         | `GET` `PUT`                                         | Definições gerais.                                           |
+| `/api/saude`                | `GET`                                               | Verificação de estado.                                       |
 
 ### Convenções
 
@@ -391,32 +391,38 @@ Documentação interativa e esquemas completos em `/docs`.
 ## Regras de negócio e validações
 
 **Contas**
+
 - Só é possível apagar uma conta sem saldos, ativos nem objetivos associados; caso contrário, desativa-se.
 - Uma conta com ativos tem de permanecer do tipo investimento ou reforma.
 
 **Categorias**
+
 - Máximo de dois níveis.
 - Os valores guardam-se apenas na categoria mais baixa; uma categoria com valores não pode ter subcategorias.
 - O tipo (despesa/receita) não se altera depois da criação.
 - Só se apaga uma categoria sem valores nem subcategorias; caso contrário, desativa-se.
 
 **Ativos**
+
 - Só contas de investimento ou reforma podem ter ativos.
 - Um ativo com meses fechados não muda de conta nem se apaga; desativa-se.
 - Não existem dois ativos ativos com o mesmo nome na mesma conta.
 - Um ativo desativado deixa de ser pedido nos novos fechos; o histórico mantém-se.
 
 **Fechos**
+
 - Um fecho por mês de referência, sem sobreposição de períodos.
 - O mês de referência tem de coincidir com o mês em que o período termina.
 - Contas com ativos não levam saldo próprio: o saldo é a soma dos ativos.
 - Num fecho novo, todos os ativos ativos têm de ter valor.
 
 **Histórico anual**
+
 - Um valor por ano (≥ 0, até 2 casas decimais).
 - Anos com meses fechados não aceitam valor manual.
 
 **Geral**
+
 - Valores monetários com um máximo de 2 casas decimais; no ecrã aceitam-se `52,30` e `52.3`.
 - Operações destrutivas pedem confirmação com um segundo clique.
 - Todo o SQL é parametrizado; os nomes de colunas em atualizações dinâmicas vêm de listas fixas, nunca do cliente.
@@ -448,15 +454,15 @@ A criação de uma suite `pytest` para a API está prevista no [Roadmap](#roadma
 
 ## Resolução de problemas
 
-| Sintoma | Causa provável | Solução |
-|---|---|---|
-| Página sem estilo ou a barra lateral não aparece | A página foi aberta fora da porta 8000 (por exemplo, Live Server) | Aceder por `http://localhost:8000/...` |
-| `Error loading ASGI app` ou `No module named backend` | Comando executado dentro de `backend/` | Executar na raiz do projeto: `python -m uvicorn backend.main:app --reload` |
-| `uvicorn` não reconhecido | Ambiente virtual não ativo | Ativar o `venv` ou usar `python -m uvicorn` |
-| `KeyError: 'DB_PASSWORD'` | Falta o ficheiro `.env` ou a variável | Criar `.env` na raiz com `DB_PASSWORD=...` |
-| `password authentication failed` | Palavra-passe errada | Corrigir `DB_PASSWORD` |
-| `relation "..." does not exist` | Falta executar um script de `database/` | Executar os scripts SQL em falta |
-| Alterações no frontend não aparecem | Cache do browser | Atualizar com `Ctrl+F5` |
+| Sintoma                                               | Causa provável                                                    | Solução                                                                    |
+| ----------------------------------------------------- | ----------------------------------------------------------------- | -------------------------------------------------------------------------- |
+| Página sem estilo ou a barra lateral não aparece      | A página foi aberta fora da porta 8000 (por exemplo, Live Server) | Aceder por `http://localhost:8000/...`                                     |
+| `Error loading ASGI app` ou `No module named backend` | Comando executado dentro de `backend/`                            | Executar na raiz do projeto: `python -m uvicorn backend.main:app --reload` |
+| `uvicorn` não reconhecido                             | Ambiente virtual não ativo                                        | Ativar o `venv` ou usar `python -m uvicorn`                                |
+| `KeyError: 'DB_PASSWORD'`                             | Falta o ficheiro `.env` ou a variável                             | Criar `.env` na raiz com `DB_PASSWORD=...`                                 |
+| `password authentication failed`                      | Palavra-passe errada                                              | Corrigir `DB_PASSWORD`                                                     |
+| `relation "..." does not exist`                       | Falta executar um script de `database/`                           | Executar os scripts SQL em falta                                           |
+| Alterações no frontend não aparecem                   | Cache do browser                                                  | Atualizar com `Ctrl+F5`                                                    |
 
 ---
 
@@ -480,34 +486,3 @@ A criação de uma suite `pytest` para a API está prevista no [Roadmap](#roadma
   ```
 
 ---
-
-## Roadmap
-
-- [ ] Exportação e backup dos dados (JSON/CSV) a partir da interface.
-- [ ] Autenticação e múltiplos utilizadores (`utilizadores`, `utilizador_id` nas tabelas principais, proteção dos routers).
-- [ ] Esquema único e completo da base de dados (`schema_completo.sql`).
-- [ ] Suite de testes automáticos (`pytest`) para a API.
-- [ ] Avisos de valores fora do normal ao fechar o mês.
-- [ ] Pesquisa e filtros nas listas.
-- [ ] Notificações (lembrete de fecho, despesas anuais a vencer).
-- [ ] Gráfico de evolução por ativo.
-- [ ] Tema escuro e melhor adaptação a ecrãs pequenos.
-- [ ] Script de arranque simples e instruções de implementação num servidor.
-
----
-
-## Contribuir
-
-Sugestões e correções são bem-vindas através de *issues* e *pull requests*. Ao propor uma alteração:
-
-1. Abrir uma *issue* a descrever o problema ou a proposta.
-2. Criar um ramo a partir de `main`.
-3. Manter o estilo existente (JavaScript puro, SQL parametrizado, validação com Pydantic).
-4. Verificar que as páginas continuam sem scroll a 1280×720 e sem erros na consola.
-5. Abrir o *pull request* com uma descrição do que mudou e como foi testado.
-
----
-
-## Licença
-
-Ainda não definida. Adicionar um ficheiro `LICENSE` (por exemplo, MIT) antes de reutilização por terceiros.
