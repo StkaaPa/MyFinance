@@ -7,12 +7,6 @@ CREATE TABLE contas (
   ativo       BOOLEAN NOT NULL DEFAULT TRUE
 );
 
-INSERT INTO contas (nome, instituicao, tipo) VALUES ('Conta Ordem', 'CGD', 'Conta Ordem');
-INSERT INTO contas (nome, instituicao, tipo) VALUES ('PPR', 'Optimize', 'Reforma');
-
-/* truncate que limpa a tabela e faz o reset aos IDs*/
-TRUNCATE contas RESTART IDENTITY;
-
 /*criar a tabela que vai contar as datas de fim de mês*/
 CREATE TABLE fechos_mensais (
   id             INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
@@ -23,12 +17,6 @@ CREATE TABLE fechos_mensais (
   CHECK (data_fim >= data_inicio)
 );
 
-INSERT INTO fechos_mensais (mes_referencia, data_inicio, data_fim) VALUES ('2026-09-01', '2026-08-27', '2026-09-26');
-
-/* truncate que limpa a tabela e faz o reset aos IDs*/
-TRUNCATE fechos_mensais RESTART IDENTITY;
-
-
 /*criar a tabela que guarda a informação relativa às categorias das despesas/receitas*/
 CREATE TABLE categorias (
   id               INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
@@ -37,21 +25,6 @@ CREATE TABLE categorias (
   categoria_pai_id INTEGER REFERENCES categorias(id),
   ativo            BOOLEAN NOT NULL DEFAULT TRUE
 );
-
-INSERT INTO categorias (nome, tipo) VALUES ('Alimentação', 'despesa');
-INSERT INTO categorias (nome, tipo, categoria_pai_id) VALUES ('Supermercado', 'despesa', 1);
-INSERT INTO categorias (nome, tipo, categoria_pai_id) VALUES ('Takeaway/Delivery', 'despesa', 1);
-INSERT INTO categorias (nome, tipo) VALUES ('Salário', 'receita');
-
-/* truncate que limpa a tabela e faz o reset aos IDs*/
-TRUNCATE categorias RESTART IDENTITY;
-
-
-/* Teste para validar a troca do categoria_pai_id pelo nome da categoria principal*/
-SELECT filha.nome AS subcategoria, mae.nome AS categoria
-FROM categorias filha
-JOIN categorias mae ON mae.id = filha.categoria_pai_id;
-
 
 /*criar a tabela que guarda a informação relativa aos saldos de todas as contas*/
 CREATE TABLE saldos_conta (
@@ -62,7 +35,6 @@ CREATE TABLE saldos_conta (
   UNIQUE (conta_id, fecho_id)
 );
 
-
 /*criar a tabela que guarda a informação relativa aos saldos de todas as categorias (alimentação, saude, transportes, ....)*/
 CREATE TABLE movimentos_categoria (
   id           INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
@@ -72,45 +44,21 @@ CREATE TABLE movimentos_categoria (
   UNIQUE (categoria_id, fecho_id)
 );
 
-
-/*novo insert para testar todo o circuito das 5 tabelas*/
-INSERT INTO contas (nome, instituicao, tipo) VALUES ('PPR', 'Optimize', 'reforma');
-INSERT INTO fechos_mensais (mes_referencia, data_inicio, data_fim) VALUES ('2026-09-01', '2026-08-27', '2026-09-26');
-INSERT INTO categorias (nome, tipo) VALUES ('Alimentação', 'despesa');
-INSERT INTO categorias (nome, tipo, categoria_pai_id) VALUES ('Supermercado', 'despesa', 1);
-INSERT INTO saldos_conta (conta_id, fecho_id, saldo) VALUES (1, 1, 1000.00);
-INSERT INTO movimentos_categoria (categoria_id, fecho_id, valor) VALUES (2, 1, 180.00);
-
-/*teste do circuito das 5 tabelas*/
-SELECT cat.nome AS categoria, f.mes_referencia, m.valor
-FROM movimentos_categoria m
-JOIN categorias cat   ON cat.id = m.categoria_id
-JOIN fechos_mensais f ON f.id = m.fecho_id;
-
-/*Teste do delete cascade - as duas tabelas têm de ficar vazias, porque caso apague uma data de fecho, os valores desse fecho são apagados também*/
-DELETE FROM fechos_mensais WHERE id = 1;
-SELECT * FROM saldos_conta;
-SELECT * FROM movimentos_categoria;
-
-TRUNCATE contas, categorias, fechos_mensais, saldos_conta, movimentos_categoria RESTART IDENTITY;
-
 /* Criação das tabelas OBJETIVOS, DESPESAS_ANUAIS e CONFIGURACOES*/
+-- Liga o fundo de emergência a uma conta (ex.: uma conta poupança).
+-- O valor do fundo em cada mês passa a ser o saldo dessa conta no fecho: não há nada de novo para preencher.
 CREATE TABLE objetivos (
   id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  conta_id INTEGER REFERENCES contas(id),
   nome TEXT NOT NULL,
   valor_alvo NUMERIC(12,2) NOT NULL CHECK (valor_alvo > 0),
   valor_atual NUMERIC(12,2) NOT NULL DEFAULT 0 CHECK (valor_atual >= 0),
   contribuicao_mensal NUMERIC(12,2) NOT NULL DEFAULT 0 CHECK (contribuicao_mensal >= 0),
   fundo_emergencia BOOLEAN NOT NULL DEFAULT FALSE,
+  icone TEXT NOT NULL DEFAULT 'alvo' CHECK (icone IN ('alvo', 'casa', 'carro', 'viagem', 'estudos', 'familia')),
   concluido BOOLEAN NOT NULL DEFAULT FALSE
 );
 CREATE UNIQUE INDEX um_fundo_emergencia ON objetivos (fundo_emergencia) WHERE fundo_emergencia;
-
--- Liga o fundo de emergência a uma conta (ex.: uma conta poupança).
--- O valor do fundo em cada mês passa a ser o saldo dessa conta no fecho: não há nada de novo para preencher.
-ALTER TABLE objetivos ADD COLUMN conta_id INTEGER REFERENCES contas(id);
-ALTER TABLE objetivos ADD COLUMN IF NOT EXISTS icone TEXT NOT NULL DEFAULT 'alvo'
-    CHECK (icone IN ('alvo', 'casa', 'carro', 'viagem', 'estudos', 'familia'));
 
 CREATE TABLE despesas_anuais (
   id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
@@ -143,10 +91,12 @@ CREATE TABLE valores_ativo (
   UNIQUE (ativo_id, fecho_id)
 );
 
-
 -- Histórico anual do património (valores de fim de ano, de antes de usares a MyFinance mês a mês).
 -- Corre uma vez no psql, na base de dados myfinance:  \i database/patrimonio_historico.sql
 CREATE TABLE IF NOT EXISTS patrimonio_historico (
   ano   INTEGER       PRIMARY KEY CHECK (ano BETWEEN 1990 AND 2100),
   valor NUMERIC(12,2) NOT NULL CHECK (valor >= 0)
 );
+
+--limpar as tabelas e fazer o reset do ID
+TRUNCATE contas, categorias, fechos_mensais, saldos_conta, movimentos_categoria, objetivos, ativos, valores_ativo RESTART IDENTITY;
