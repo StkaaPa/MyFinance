@@ -18,5 +18,5 @@ env/
 # VS Code
 .vscode/
 
-#database
-*.sql
+#ficheiro bat
+*.bat
