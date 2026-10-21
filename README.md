@@ -486,3 +486,7 @@ A criação de uma suite `pytest` para a API está prevista no [Roadmap](#roadma
   ```
 
 ---
+
+## Licença
+
+Ver a licença em [LICENSE](#license)
